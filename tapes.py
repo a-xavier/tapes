@@ -1,5 +1,5 @@
 #!usr/bin/env python3
-import tapes_func as tf
+import t_func as tf
 import argparse
 import os
 import json
@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help
 
 parser.add_argument('option', type=str, nargs=1,
                     help="Choose the main function:\n"
-                         "annotate: use ANNOVAR to annotate a vcf file\n"
+                         "annotate: use annovar to annotate a vcf file\n"
                          "sort: use tapes to prioritise variants\n"
                          "db: see or download databases\n"
                          "analyse: use an already analysed file to produce a specific report",
@@ -20,7 +20,7 @@ parser.add_argument('option', type=str, nargs=1,
 
 parser.add_argument('-i', '--input',
                     required=False,
-                    help="Path of the input csv file annotated by ANNOVAR",
+                    help="Path of the input csv file annotated by annovar",
                     type=str)
 parser.add_argument('-o', '--output',
                     required=False,
@@ -34,11 +34,11 @@ parser.add_argument('-b', '--build_db',
 
 parser.add_argument('-A', '--annovar',
                     nargs='?',
-                    help="Path of the ANNOVAR FOLDER",
+                    help="Path of the annovar FOLDER",
                     type=str,
                     required=False)
 parser.add_argument('-s', '--see_db',
-                    help="Path of the ANNOVAR FOLDER : /humandb will be searched for relevant databases and write the"
+                    help="Path of the annovar FOLDER : /humandb will be searched for relevant databases and write the"
                          "result in db_config.json in tapes current directory",
                     action="store_true",
                     required=False)
@@ -272,22 +272,22 @@ def main():
 
 
 if __name__ == "__main__":
-    # Process data from ANNOVAR annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
+    # Process data from annovar annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
     if (args.output and args.input and args.assembly) and args.option == ['sort']:
         main()
 
-    # BUILD ANNOVAR DATABASES
+    # BUILD annovar DATABASES
     elif args.option == ['db'] and args.build_db is True:
-        # PROCESS ANNOVAR PATH
-        if args.ANNOVAR is None:  # If annovar folder not supplied, look at the config file
+        # PROCESS annovar PATH
+        if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
                 with open('db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
-                print("No ANNOVAR path given and no db_config.json found")
+                print("No annovar path given and no db_config.json found")
         else:
-            annovar_path = args.ANNOVAR
+            annovar_path = args.annovar
         tf.build_annovar_db(annovar_path, args.assembly, args.acmg)
         tf.check_for_acmg_databases(acmg_db_path)
         tf.check_online_annovar_dbs(annovar_path)
@@ -297,16 +297,16 @@ if __name__ == "__main__":
 
     # ANNOTATE VCF FILE
     elif (args.input and args.output) is not None and args.option == ['annotate']:
-        # PROCESS ANNOVAR PATH
-        if args.ANNOVAR is None:  # If annovar folder not supplied, look at the config file
+        # PROCESS annovar PATH
+        if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
                 with open('db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
-                print("No ANNOVAR path given and no db_config.json found")
+                print("No annovar path given and no db_config.json found")
         else:
-            annovar_path = args.ANNOVAR
+            annovar_path = args.annovar
         if args.output[-4:] == '.csv' or args.output[-4:] == '.txt':
             tf.process_annotate_vcf(args.input, args.output, annovar_path, args.assembly, args.ref_anno, args.acmg)
             tf.merge_sample_info_in_annotated_csv(args.output, args.assembly)
@@ -317,19 +317,19 @@ if __name__ == "__main__":
                   ' output')
             tf.sys.exit(1)
 
-    # SCAN ANNOVAR DATABASES ALREADY DOWNLOADED AND STORE THEM INSIDE OF A FILE
+    # SCAN annovar DATABASES ALREADY DOWNLOADED AND STORE THEM INSIDE OF A FILE
 
     elif args.option == ['db'] and args.see_db is True:
-        # PROCESS ANNOVAR PATH
-        if args.ANNOVAR is None:  # If annovar folder not supplied, look at the config file
+        # PROCESS annovar PATH
+        if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
                 with open('db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
-                print("No ANNOVAR path given and no db_config.json found")
+                print("No annovar path given and no db_config.json found")
         else:
-            annovar_path = args.ANNOVAR
+            annovar_path = args.annovar
         tf.check_online_annovar_dbs(annovar_path)
         tf.scan_for_db(annovar_path)
         tf.writing_db_to_file(annovar_path, args.acmg_db)
