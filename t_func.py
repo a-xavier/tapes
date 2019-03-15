@@ -3205,7 +3205,7 @@ def help_message():
         BOLD = '\033[1m'
         UNDERLINE = '\033[4m'
         HIGHLIGHT = '\033[7m'
-    if sys.stdout.isatty():
+    if sys.stdout.isatty() and 'win' not in sys.platform:
         message = """
 {high}---------------------------------------------------
 TAPES : Tool for Assessment and Prioritisation in  
