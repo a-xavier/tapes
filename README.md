@@ -11,7 +11,7 @@ TAPES is written for python3. You can use pip (pip3) for dependencies.
 
 run ```pip install -r requirements.txt ```
 
-## Quick sorting
+## Quick start : prioritisation
 
 Using ```python``` or ```python3``` depending on your default installation:
 
