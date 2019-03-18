@@ -1,0 +1,8 @@
+CCDC27	0.9999
+Chr	Start	End	Ref	Alt	Func.refGene	Gene.refGene	Probability_Path	Prediction_ACMG_tapes	Samples
+1	3680286	3680288	ACA	.	exonic	CCDC27	0.9999	Pathogenic	BZ_sample
+
+MAGEC1	0.85
+Chr	Start	End	Ref	Alt	Func.refGene	Gene.refGene	Probability_Path	Prediction_ACMG_tapes	Samples
+X	140994592	140994699	AGTACTTTTGAGGGTTTTCCCCAGTCTCCTCTCCAGATTCCTGTGAGCTCCTCCTCCTCCTCCTCCACTTTATTGAGTCTTTTCCAGAGTTCCCCTGAGTGTACTCAA	.	exonic	MAGEC1	0.85	Pathogenic	BY_sample
+

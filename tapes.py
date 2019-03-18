@@ -6,6 +6,7 @@ import json
 from time import time
 from numpy import array_split
 from multiprocessing.pool import Pool
+import sys
 
 
 parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help=False)
@@ -16,7 +17,7 @@ parser.add_argument('option', type=str, nargs=1,
                          "sort: use tapes to prioritise variants\n"
                          "db: see or download databases\n"
                          "analyse: use an already analysed file to produce a specific report",
-                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse'])
+                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze'])
 
 parser.add_argument('-i', '--input',
                     required=False,
@@ -42,14 +43,14 @@ parser.add_argument('-s', '--see_db',
                          "result in db_config.json in tapes current directory",
                     action="store_true",
                     required=False)
-parser.add_argument('-E', '--enrichr',
+parser.add_argument('-e', '--enrichr',
                     help="use --enrichr to analyse top mutations (>0.85 in Total score) with EnrichR API"
                          "Default is GO_Biological_Process_2018, see http://amp.pharm.mssm.edu/Enrichr/#stats to see "
                          "all available database",
                     nargs="?", const="GO_Biological_Process_2018",
                     required=False)
 
-parser.add_argument("-D", "--disease",
+parser.add_argument("-d", "--disease",
                     help="excluse genes non involved in specified disease (based on Disease column description in a new"
                          " spreadsheet in xlsx file, use quotes '' to use a multiple words term (eg; 'multiple sclerosis' "
                          "Default = cancer",
@@ -146,7 +147,10 @@ def main():
     start_time = time()
     output_type = tf.output_type(args.output)  # Determine output type either directory or csv or txt/tsv
     if output_type == 'directory':
-        output_prefix = args.output.split('/')[-2]
+        if 'win' not in sys.platform:
+            output_prefix = args.output.split('/')[-2]
+        elif 'win' in sys.platform:
+            output_prefix = args.output.split('\\')[-2]
 
     file_path = tf.process_path(args.input)  # process relative to absolute path
 

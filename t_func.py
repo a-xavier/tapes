@@ -2526,6 +2526,17 @@ def output_type(output_arg):
             print(tmp_stmp()+'Output type: FOLDER')
             os.makedirs(output_arg)
             return 'directory'
+    elif output_arg[-1] == '\\':
+        if os.path.isdir(output_arg) and len(os.listdir(output_arg)) > 0:
+            print(tmp_stmp()+'This directory already exists and is not empty, exiting...')
+            sys.exit(1)
+        elif os.path.isdir(output_arg) and len(os.listdir(output_arg)) == 0:
+            print(tmp_stmp()+'Output type: FOLDER')
+            return 'directory'
+        elif os.path.isdir(output_arg) is False:
+            print(tmp_stmp()+'Output type: FOLDER')
+            os.makedirs(output_arg)
+            return 'directory'
     elif output_arg[-4:] == '.csv':
         print(tmp_stmp()+'Output type: CSV + XLSX')
         return 'csv'
