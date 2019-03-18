@@ -19,9 +19,9 @@ Using ```python``` or ```python3``` depending on your default installation:
 
 ##### Example of sorting options
 
-* ```--acmg``` to perform a check of all necessary annotations _flag_  
-* ```--by_sample``` to generate a report of the 5 (or less) most pathogenic variants in the cohort _flag_  
-* ```--by_gene``` to generate a report of the gene mutation burden for each gene _flag_  
-* ```--enrichr [library]``` to generate a pathway analysis of the genes affected by pathogenic mutations [default = GO_Biological_Process_2018]  
+* ```--acmg``` to perform a check of all necessary annotations | _flag_  
+* ```--by_sample``` to generate a report of the 5 (or less) most pathogenic variants for each sample in the cohort | _flag_  
+* ```--by_gene``` to generate a report of the gene mutation burden for each gene | _flag_  
+* ```--enrichr [library]``` to generate a pathway analysis of the genes affected by pathogenic mutations | [default = GO_Biological_Process_2018]  
 
 See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) for the full range of options and functionalities.
