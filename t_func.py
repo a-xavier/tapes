@@ -3219,7 +3219,7 @@ def help_message():
     if sys.stdout.isatty() and 'win' not in sys.platform:
         message = """
 {high}---------------------------------------------------
-TAPES : Tool for Assessment and Prioritisation in  
+TAPES : a Tool for Assessment and Prioritisation in  
                     Exome Studies                  
 ---------------------------------------------------{end}
 
@@ -3337,7 +3337,7 @@ python tapes.py {red}db{end} -b -A /path/to/annovar  | Download annovar database
     else:
         message = """
         ---------------------------------------------------
-        TAPES : Tool for Assessment and Prioritisation in
+        TAPES : a Tool for Assessment and Prioritisation in
                           Exome Studies
         ---------------------------------------------------
 
