@@ -24,4 +24,6 @@ Using ```python``` or ```python3``` depending on your default installation:
 * ```--by_gene``` to generate a report of the gene mutation burden for each gene | _flag_  
 * ```--enrichr [library]``` to generate a pathway analysis of the genes affected by pathogenic mutations | [default = GO_Biological_Process_2018]  
 
-See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for the full range of options and functionalities.
+See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for the full range of options and functionalities.   
+
+___Coming Soon___...Support for VEP annotated vcf
