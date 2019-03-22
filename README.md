@@ -15,9 +15,9 @@ run ```pip3 install -r requirements.txt ```
 
 Using ```python``` or ```python3``` depending on your default installation:
 
-```python tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output.txt --sortingoptions```
+```python tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output.txt --reporting_options```
 
-##### Example of sorting options
+##### Example of sorting and reporting options
 
 * ```--acmg``` to perform a check of all necessary annotations | _flag_  
 * ```--by_sample``` to generate a report of the 5 (or less) most pathogenic variants for each sample in the cohort | _flag_  
