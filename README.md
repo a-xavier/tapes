@@ -9,7 +9,7 @@ TAPES is mostly designed for mendelian diseases and exome studies of cohorts sha
 TAPES is written for python3. You can use pip (pip3) for dependencies.
 ### Resolve dependencies 
 
-run ```pip3 install -r requirements.txt ```
+run ```pip3 install -r requirements.txt --user ```
 
 ## Quick start : prioritisation
 
