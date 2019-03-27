@@ -1793,7 +1793,7 @@ def check_PM5_criteria(full_stuff, PS1_dict, ref_anno):
 
     for chr, start, stop, aa_change, exo_func in zip(chr_series, start_series, end_series, aa_change_series, exonic_func_series):
         if 'frameshift' not in exo_func:
-            if len(aa_change_series) >= 10 and ':p.' in aa_change_series:
+            if len(aa_change) >= 10 and ':p.' in aa_change:
                 isolated = aa_change.split(":p.")[-1]  # Take the last segment of aachange just after 'p.'
                 first = isolated[:1]
                 last = isolated[-1:]
