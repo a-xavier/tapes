@@ -3,8 +3,12 @@
 
 Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) for more detailed explanations on every option.   
   
-TAPES uses [ANNOVAR](annovar.openbioinformatics.org) annotated vcf/txt/csv files to prioritize variant, predict their pathogenicity and generates useful reports.  
-TAPES is mostly designed for mendelian diseases and exome studies of cohorts sharing a common phenotype but can prioritise any vcf file.
+TAPES can:  
+- uses [ANNOVAR](annovar.openbioinformatics.org) annotated vcf/txt/csv files to prioritize variant, predict their pathogenicity (using both the ACMG Criteria and a direct pathogenicity probability ranked from 0 to 1).
+- generate useful reports in multi-sample vcf/cohorty studies
+- be used as an simplified interface for ANNOVAR  
+
+TAPES is mostly designed for mendelian diseases and exome studies of cohorts sharing a common phenotype but can prioritise any ANNOVAR annotated vcf file.
 
 TAPES is written for python3. You can use pip (pip3) for dependencies.
 ### Resolve dependencies 
