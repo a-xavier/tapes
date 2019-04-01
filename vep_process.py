@@ -163,20 +163,6 @@ def vep_process_vcf(vcf_path, acmg_db_path):
         full_stuff_tmp = pd.concat([basic_info_df, info_df], axis=1, sort=False)
         if full_stuff_tmp.shape[0] == geno_df.shape[0]:
             full_stuff = pd.concat([full_stuff_tmp, geno_df], axis=1, sort=False)
-            ### COLUMN RENAMING ###
-            """rename_dict = {
-                'SYMBOL': 'Gene.{}'.format(ref_anno),
-                'ada_score': 'dbscSNV_ADA_SCORE',
-                'rf_score': 'dbscSNV_RF_SCORE',
-                'gnomAD_genomes_AF': 'gnomAD_genome_ALL',
-                'gnomAD_exomes_AF': 'gnomAD_exome_ALL',
-                'ExAC_AF': 'ExAC_ALL',
-            }
-            print(rename_dict)
-            for key in rename_dict:
-                full_stuff.rename(index=str, columns=rename_dict, inplace=True)
-    
-            print(list(full_stuff.columns))"""
             print('Done')
             full_stuff.to_csv('/home/alex/Desktop/processedVEP.txt', sep='\t', index=False)
             return full_stuff
@@ -983,21 +969,6 @@ def check_vep_PP3_and_BP4_dbnsfp(full_stuff):
             PP3_contrib.append(0)
             BP4_contrib.append(0)
     return [PP3_contrib, BP4_contrib]
-
-
-"""acmg_db_path = '/home/alex/PycharmProjects/tapes/acmg_db/'
-df_tmp = vep_process_vcf('/home/alex/Desktop/vep_tapes.vcf',acmg_db_path)  # pd.read_csv('/home/alex/Desktop/processedVEPHIGH.txt', sep='\t')
-assembly = 'hg19'
-ref_anno = 'refGene'
-trio = None #'/home/alex/Desktop/trio.txt'
-num_samp = 48
-cutoff = 0.005
-tup_database = load_vep_databases(acmg_db_path, assembly, ref_anno, trio, 80, 1, 15)
-#print(whole_dict)
-#print(check_vep_PVS1_criteria(df_tmp, PSV1_list, ref_anno, rek_dict))
-#print(check_vep_PS1_criteria(df_tmp, PS1_dict, ref_anno))
-#print(check_vep_PS2_criteria(df_tmp, whole_dict))
-#print(check_vep_PS3(df_tmp))"""
 
 
 def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
