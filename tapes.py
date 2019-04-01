@@ -16,6 +16,7 @@ import json
 from time import time
 from numpy import array_split
 from multiprocessing.pool import Pool
+import vep_process as vp
 import sys
 
 
@@ -164,9 +165,11 @@ def main():
 
     file_path = tf.process_path(args.input)  # process relative to absolute path
 
-    full_stuff = tf.open_csv_file(file_path)    # Load annotated csv in pandas
+    full_stuff, soft_used = tf.open_csv_file(file_path, acmg_db_path)    # Load annotated csv in pandas
+    print(tf.tmp_stmp()+'{} annotated file'.format(soft_used))
 
     ref_anno = tf.reference_used(full_stuff)      # Detect reference annotation used (refseq/UCSC/ENSEMBL)
+
 
     # IF NUMBER OF SAMPLE UNDER 15 PS4 will not be calculated using fisher's test but with the normal db
 
@@ -187,7 +190,10 @@ def main():
     ### TESTS ###
     # FIRST LOADS ALL NECESSARY DATABASES
     global tup_databases
-    tup_databases = tf.load_databases(acmg_db_path, ref_anno, args.assembly, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
+    if soft_used == 'annovar':
+        tup_databases = tf.load_databases(acmg_db_path, ref_anno, args.assembly, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
+    elif soft_used == 'vep':
+        tup_databases = vp.load_vep_databases(acmg_db_path, args.assembly, ref_anno, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
 
     # IF TRIO DATA IS THERE EXCLUDE HEALTHY PARENTS
     if args.trio is not None:
@@ -211,17 +217,26 @@ def main():
         # problem HIGH USAGE OF RAM FOR EACH PROCESS (Because of databases copied to child processes)
 
         pool = Pool(processes=args.threads)
-        result = pool.starmap(tf.process_data, list_args)
+        if soft_used == "annovar":
+            result = pool.starmap(tf.process_data, list_args)
+        elif soft_used == 'vep':
+            result = pool.starmap(vp.process_data, list_args)
         pool.close()
         pool.join()
-
         final_stuff = tf.pd.concat(result)  # Merge all pieces for final dataframe
+        if soft_used == 'vep':
+            final_stuff = vp.rename_columns(final_stuff, ref_anno)
         final_stuff.drop(list_healthy, axis=1, inplace=True)
         ###END MUTLTIPROCESS###
 
     else:
-        final_stuff = tf.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
-        final_stuff.drop(list_healthy, axis=1, inplace=True)
+        if soft_used == 'annovar':
+            final_stuff = tf.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
+            final_stuff.drop(list_healthy, axis=1, inplace=True)
+        elif soft_used == 'vep':
+            final_stuff = vp.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
+            final_stuff = vp.rename_columns(final_stuff, ref_anno)
+            final_stuff.drop(list_healthy, axis=1, inplace=True)
 
     final_stuff = tf.sort_by_pathogenicity(final_stuff)
 
@@ -356,7 +371,7 @@ if __name__ == "__main__":
 
     # Re-analyse TODO REFINE PROCESS for just the analysis wanted (don't do xlsx report)
     elif (args.output and args.input and args.assembly) and (args.option == ['analyse'] or args.option == ['analyze']):
-        final_stuff = tf.open_csv_file(args.input)
+        final_stuff, soft_used = tf.open_csv_file(args.input, acmg_db_path)
         ref_anno = args.ref_anno
         number_of_samples = tf.counting_number_of_samples(final_stuff)
         output_type = tf.output_type(args.output)  # Determine output type either directory or csv or txt/tsv

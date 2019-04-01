@@ -14,6 +14,7 @@ import pandas as pd
 from pandas import errors
 from scipy.stats import fisher_exact
 from difflib import get_close_matches
+import vep_process as vp
 if 'win' not in sys.platform:
     from pysam import VariantFile
 
@@ -28,7 +29,8 @@ def add_list_to_df(full_table, user_list, name_of_column):
     return full_table
 
 
-def open_csv_file(csv_file):
+def open_csv_file(csv_file, acmg_db_path):
+    soft_used = None
     if os.path.isfile(csv_file) and csv_file[-4:] == '.csv':
         try:
             dataframe = pd.read_csv(csv_file, low_memory=False)
@@ -43,17 +45,27 @@ def open_csv_file(csv_file):
                         outfile.write(nline)
             dataframe = pd.read_csv(tmp_file, low_memory=False)
             dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
+            soft_used = 'annovar'
             os.remove(tmp_file)
             print("Done")
-        return dataframe
+        return dataframe, soft_used
     elif os.path.isfile(csv_file) and csv_file[-4:] == '.vcf':
-        dataframe = process_annotated_vcf(csv_file)
-        dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-        return dataframe
+        soft_used = check_which_soft_used(csv_file)
+        if soft_used == 'annovar':
+            dataframe = process_annotated_vcf(csv_file)
+            dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
+        elif soft_used == 'vep':
+            dataframe = vp.vep_process_vcf(csv_file, acmg_db_path)
+            dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
+        elif soft_used is None:
+            print('|| No annotation found. Checked header for ANNOVAR or VEP annotations. Exiting...')
+            sys.exit(1)
+        return dataframe, soft_used
     elif os.path.isfile(csv_file) and (os.path.isfile(csv_file) and csv_file[-4:] == '.txt' or os.path.isfile(csv_file) and csv_file[-4:] == '.tsv'):
         dataframe = pd.read_csv(csv_file, sep='\t', low_memory=False) # TODO maybechange that, header=0, engine='python',index_col=False)
         dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-        return dataframe
+        soft_used = 'annovar'
+        return dataframe, soft_used
     elif os.path.isfile(csv_file) is False:
         print('File does not exist')
         sys.exit(1)
@@ -1328,7 +1340,7 @@ def counting_number_of_samples(full_stuff):
                 values_of_line = samp_df.iloc[line].values
                 samps.append(sum(values_of_line))
             num_of_samps = max(samps)
-
+        print(tmp_stmp()+'{} samples found'.format(num_of_samps))
         return num_of_samps
     except KeyError:
         print('|| No sample data found')
@@ -1652,9 +1664,12 @@ def check_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df, number_of_s
 
     elif ('WT count' and 'Het count' and 'Hom count') not in full_stuff.columns or number_of_samples < 15:
         PS4_contrib = []
-        snp_col = [s for s in full_stuff.columns if 'snp' in s][0]
+        try:  ## FOR ANNOVAR
+            snp_col = [s for s in full_stuff.columns if 'snp' in s][0]
+        except IndexError:  ## FOR VEP
+            snp_col = 'Existing_variation'
         try:
-            rs_number_series = full_stuff[snp_col]
+            rs_number_series = full_stuff[snp_col].str.split("&", n=1, expand=False).str[0] ## REMOVE VEP '&' string
             list_of_rsid = PS4_df['SNPID'].tolist()
             for rsid in rs_number_series:
                 if rsid in list_of_rsid:
@@ -2060,7 +2075,7 @@ def check_BS1(full_stuff, cutoff):
     return BS1_contrib
 
 
-def check_BS2(full_stuff, bs2_het_list, bs2_hom_list, rec_list, dom_list, adult_list, ref_anno):
+def check_BS2(full_stuff, BS2_hom_het_dict, rec_list, dom_list, adult_list, ref_anno):
     start_series = full_stuff['Start']
     chr_series = full_stuff['Chr']
     gene_series = full_stuff['Gene.{}'.format(ref_anno)]
@@ -2068,21 +2083,28 @@ def check_BS2(full_stuff, bs2_het_list, bs2_hom_list, rec_list, dom_list, adult_
     alt_snv = full_stuff['Alt']
 
     all_tuple = zip(chr_series, start_series, ref_snv, alt_snv, gene_series)
-    BS2_contrib =[]
+    BS2_contrib = []
     for chr, start, ref, alt, gene in all_tuple:
+
         if gene in adult_list:  # Remove all in adult onset
             BS2_contrib.append(0)
         elif gene in rec_list:  # Check for recessive first
-            key_snv = str(chr) + '_' + str(start) + '_' + ref + '_' + alt
-            if key_snv in bs2_hom_list:
-                BS2_contrib.append(1)
-            else:
+            key_snv = ref + '_' + alt
+            try:
+                if key_snv == BS2_hom_het_dict["hom"][str(chr)][str(start)]:
+                    BS2_contrib.append(1)
+                else:
+                    BS2_contrib.append(0)
+            except KeyError:
                 BS2_contrib.append(0)
         elif gene in dom_list:  # Then check dominant # What if both dominant and recessive
-            key_snv = str(chr) + '_' + str(start) + '_' + ref + '_' + alt
-            if key_snv in bs2_het_list:
-                BS2_contrib.append(1)
-            else:
+            key_snv = ref + '_' + alt
+            try:
+                if key_snv == BS2_hom_het_dict["het"][str(chr)][str(start)]:
+                    BS2_contrib.append(1)
+                else:
+                    BS2_contrib.append(0)
+            except KeyError:
                 BS2_contrib.append(0)
         else:
             BS2_contrib.append(0)
@@ -2161,7 +2183,7 @@ def decompose_vcf(vcf_input, decomposed_vcf_output):
 def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
     # Load all databases
     print(tmp_stmp()+'Starting...')
-    PVS1_list, rek_dict, PS1_dict, bs2_het_list, bs2_hom_list, rec_list, dom_list, adult_list, PS4_df, repeat_dict,\
+    PVS1_list, rek_dict, PS1_dict, BS2_hom_het_dict, rec_list, dom_list, adult_list, PS4_df, repeat_dict,\
     PP2_list, BP1_list, data_pm1, whole_dict = tup_database
 
     # TODO REST INDEXES ?
@@ -2340,7 +2362,7 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
 
     # BS2 Benign variants observed in dominant (heterozygote) and recessive (homozygote) diseases (or X linked)
     try:
-        BS2_contrib = check_BS2(full_stuff, bs2_het_list, bs2_hom_list, rec_list, dom_list, adult_list, ref_anno)
+        BS2_contrib = check_BS2(full_stuff, BS2_hom_het_dict, rec_list, dom_list, adult_list, ref_anno)
         print(tmp_stmp() + 'BS2 done')
     except (KeyError, UnboundLocalError, NameError) as e:
         BS2_contrib = [0] * df_length
@@ -2464,13 +2486,28 @@ def test_if_decomposed(vcf_file):
 
 
 def reference_used(full_stuff):
-    filter_col = [col for col in full_stuff if col.startswith(('Gene.', 'GeneDetail.'))]
-    if filter_col[0].split('.')[1] == filter_col[1].split('.')[1]:
-        ref_used = filter_col[0].split('.')[1]
-        print(tmp_stmp()+'Gene annotation : '+ref_used)
-    else:
-        print('Could not determine annotation used, exiting...')
-        sys.exit(1)
+    try:
+        filter_col = [col for col in full_stuff if col.startswith(('Gene.', 'GeneDetail.'))]
+        if filter_col[0].split('.')[1] == filter_col[1].split('.')[1]:
+            ref_used = filter_col[0].split('.')[1]
+            print(tmp_stmp()+'Gene annotation : '+ref_used)
+        else:
+            print('Could not determine annotation used, exiting...')
+            sys.exit(1)
+    except IndexError:
+        fest_col = full_stuff['Feature']
+        if fest_col[0].startswith('NM_'):
+            ref_used = 'refGene'
+            print(tmp_stmp() + 'Gene annotation : ' + ref_used)
+        elif fest_col[0].startswith('ENST'):
+            ref_used = 'ensGene'
+            print(tmp_stmp() + 'Gene annotation : ' + ref_used)
+        elif fest_col[0].startswith('uc0'):
+            ref_used = 'knownGene'
+            print(tmp_stmp() + 'Gene annotation : ' + ref_used)
+        else:
+            print('Could not determine annotation used, exiting...')
+            sys.exit(1)
     return ref_used
 
 
@@ -2986,8 +3023,60 @@ def load_databases(acmg_db_path, ref_anno, assembly, trio_data, pp2_percent, pp2
 
     ##### BS2 whole thing ########
 
-    bs2_het_list = []
-    bs2_hom_list = []
+    BS2_hom_het_dict = {"het": {'1': {},
+                                '2': {},
+                                '3': {},
+                                '4': {},
+                                '5': {},
+                                '6': {},
+                                '7': {},
+                                '8': {},
+                                '9': {},
+                                '10': {},
+                                '11': {},
+                                '12': {},
+                                '13': {},
+                                '14': {},
+                                '15': {},
+                                '16': {},
+                                '17': {},
+                                '18': {},
+                                '19': {},
+                                '20': {},
+                                '21': {},
+                                '22': {},
+                                'X': {},
+                                'Y': {},
+                                'M': {},
+                                'MT': {}},
+                        "hom": {'1': {},
+                                '2': {},
+                                '3': {},
+                                '4': {},
+                                '5': {},
+                                '6': {},
+                                '7': {},
+                                '8': {},
+                                '9': {},
+                                '10': {},
+                                '11': {},
+                                '12': {},
+                                '13': {},
+                                '14': {},
+                                '15': {},
+                                '16': {},
+                                '17': {},
+                                '18': {},
+                                '19': {},
+                                '20': {},
+                                '21': {},
+                                '22': {},
+                                'X': {},
+                                'Y': {},
+                                'M': {},
+                                'MT': {}}
+                        }
+
     with gzip.open(os.path.join(acmg_db_path, "BS2_hom_het.{}".format(assembly)), 'rt') as bs2_file:
         for line in bs2_file.readlines():
             chr = line.split(' ')[0].strip()
@@ -2997,9 +3086,11 @@ def load_databases(acmg_db_path, ref_anno, assembly, trio_data, pp2_percent, pp2
             hom = line.split(' ')[4].strip()
             het = line.split(' ')[5].strip()
             if str(het) == '1':
-                bs2_het_list.append(str(chr) + '_' + str(pos) + '_' + ref + '_' + alt)
+                # bs2_het_list.append(str(chr) + '_' + str(pos) + '_' + ref + '_' + alt)
+                BS2_hom_het_dict["het"][chr][pos] = ref + '_' + alt
             if str(hom) == '1':
-                bs2_hom_list.append(str(chr) + '_' + str(pos) + '_' + ref + '_' + alt)
+                # bs2_hom_list.append(str(chr) + '_' + str(pos) + '_' + ref + '_' + alt)
+                BS2_hom_het_dict["hom"][chr][pos] = ref + '_' + alt
 
     bs2_hom_het_ad_df = pd.read_csv(os.path.join(acmg_db_path, 'BS2_rec_dom_ad.txt'), sep='\t')
 
@@ -3075,7 +3166,7 @@ def load_databases(acmg_db_path, ref_anno, assembly, trio_data, pp2_percent, pp2
     tup_database = (PVS1_list
     , rek_dict
     , PS1_dict
-    , bs2_het_list, bs2_hom_list, rec_list, dom_list, adult_list
+    , BS2_hom_het_dict, rec_list, dom_list, adult_list
     , PS4_df
     , repeat_dict
     , PP2_list
@@ -3553,3 +3644,16 @@ def flags():
         "ABCA4"]
     return everything
 
+
+def check_which_soft_used(vcf_input):
+    soft_used = None
+    with open(vcf_input, 'r') as input_vcf:
+        for line in input_vcf.readlines():
+            if line.startswith('##'):
+                if 'ANNOVAR_DATE=' in line:
+                    soft_used = 'annovar'
+                elif "ID=CSQ" in line or "ID=ANN" in line:
+                    soft_used = 'vep'
+            else:
+                break
+    return soft_used
