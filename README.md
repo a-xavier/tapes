@@ -4,7 +4,7 @@
 Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) for more detailed explanations on every option.   
   
 TAPES can:  
-- uses [ANNOVAR](annovar.openbioinformatics.org) or VEP annotated vcf/txt/csv files to prioritize variant, predict their pathogenicity (using both the ACMG Criteria and a direct pathogenicity probability ranked from 0 to 1).
+- uses [ANNOVAR](annovar.openbioinformatics.org) (or [VEP](https://ensembl.org/info/docs/tools/vep/index.html)) annotated vcf/txt/csv files to prioritize variant, predict their pathogenicity (using both the ACMG Criteria and a direct pathogenicity probability ranked from 0 to 1).
 - generate useful reports in multi-sample vcf/cohorty studies
 - be used as an simplified interface for ANNOVAR  
 
