@@ -2863,35 +2863,48 @@ def gene_grouped_report(full_stuff, ref_anno, acmg_db_path, number_of_samples):
     for truc in grouped:
         gene_df = truc[1]  # iterate over individual df for each gene
         list_cols = list(gene_df.columns)  # get list of columns
-        format_index = list_cols.index("FORMAT")  # get index of format column
-        wt_index = list_cols.index("WT count")  # get index of wt count column
-        samp_list = list_cols[format_index + 1:wt_index]  # make the list of sample columns based on indexes
-        samp_df = gene_df[samp_list]
-        for column in samp_df.columns:  # make df of only genotyping matrix
-            #  Remove all columns with no variants
-            if ("0/1" or '0/2' or "1/1" or "1/2" or "1|0" or "0|2" or "0|1" or "2|0" or "1|1" or "2|2" or "1|2" or "2|1") \
-                    not in list(samp_df[column]):
-                samp_df.pop(column)
-        list_samp_per_var = []
-        for line in range(0, samp_df.shape[0]):  # for each variant of each gene
-            serie = samp_df.iloc[line]
-            for column in serie.index:
-                if serie[column] == '0/0' or serie[column] == './.':
-                    serie.drop(index=column, inplace=True)
-            list_samp_per_var.append(", ".join(serie.axes[0].tolist()))
-        del list_cols[7:-2]  # Remove all columns unless required
-        gene_df = gene_df[list_cols].copy()
-        gene_df['Samples'] = pd.Series(list_samp_per_var).values
-        longueur = gene_df.shape[0]
-        proba_series = gene_df['Probability_Path']
-        samp_series = gene_df['Samples']
-        score_top = 0
-        for proba, samp in zip(proba_series, samp_series):
-            score_top = score_top + (proba * (len(samp.split(','))))
-        try:
-            gene_length = length_dict[truc[0].strip()]
-        except KeyError:
-            gene_length = 0
+        try: # IF SAMPLE ARE PRESENT
+            format_index = list_cols.index("FORMAT")  # get index of format column
+            wt_index = list_cols.index("WT count")  # get index of wt count column
+            samp_list = list_cols[format_index + 1:wt_index]  # make the list of sample columns based on indexes
+            samp_df = gene_df[samp_list]
+            for column in samp_df.columns:  # make df of only genotyping matrix
+                #  Remove all columns with no variants
+                if ("0/1" or '0/2' or "1/1" or "1/2" or "2/2" or "1|0" or "0|2" or "0|1" or "2|0" or "1|1" or "2|2" or "1|2" or "2|1") \
+                        not in list(samp_df[column]):
+                    samp_df.pop(column)
+            list_samp_per_var = []
+            for line in range(0, samp_df.shape[0]):  # for each variant of each gene
+                serie = samp_df.iloc[line]
+                for column in serie.index:
+                    if serie[column] == '0/0' or serie[column] == './.':
+                        serie.drop(index=column, inplace=True)
+                list_samp_per_var.append(", ".join(serie.axes[0].tolist()))
+            del list_cols[7:-2]  # Remove all columns unless required
+            gene_df = gene_df[list_cols].copy()
+            gene_df['Samples'] = pd.Series(list_samp_per_var).values
+            longueur = gene_df.shape[0]
+            proba_series = gene_df['Probability_Path']
+            samp_series = gene_df['Samples']
+            score_top = 0
+            for proba, samp in zip(proba_series, samp_series):
+                score_top = score_top + (proba * (len(samp.split(','))))
+            try:
+                gene_length = length_dict[truc[0].strip()]
+            except KeyError:
+                gene_length = 0
+        except (KeyError, ValueError) as e: # IF SAMPLE DATA IS NOT PRESENT
+            longueur = gene_df.shape[0]
+            proba_series = gene_df['Probability_Path']
+            score_top = 0
+            for proba in proba_series:
+                score_top = score_top + proba
+            try:
+                gene_length = length_dict[truc[0].strip()]
+            except KeyError:
+                gene_length = 0
+            del list_cols[7:-2]  # Remove all columns unless required
+            gene_df = gene_df[list_cols].copy()
 
         # Creates a warning if :
         # -at least half of the variants in any gene are affecting half or more of the total cohort
@@ -2899,7 +2912,10 @@ def gene_grouped_report(full_stuff, ref_anno, acmg_db_path, number_of_samples):
 
         warning_sample_count = 0 # To raise warning about too many samples affected by variants in gene
         for line in range(0, gene_df.shape[0]):  # for each variant of each gene
-            samp_affected = len(gene_df.iloc[line]['Samples'].split(','))
+            try:
+                samp_affected = len(gene_df.iloc[line]['Samples'].split(','))
+            except KeyError:
+                samp_affected = 0
             if samp_affected >= number_of_samples/2:
                 warning_sample_count = warning_sample_count + 1
         if warning_sample_count >= gene_df.shape[0]: # if more than half of the variant in this gene are suspicious
