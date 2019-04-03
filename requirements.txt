@@ -4,3 +4,4 @@ scipy==1.1.0
 XlsxWriter==1.1.2
 vcf-parser==1.6
 pysam==0.15.2
+matplotlib==3.0.2
