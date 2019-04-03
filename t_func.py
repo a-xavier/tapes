@@ -2606,7 +2606,7 @@ def csv_report(full_stuff, output_path, suffix, ref_anno, tab_output):
     type_series = full_stuff['ExonicFunc.{}'.format(ref_anno)].value_counts()
     plot_type = type_series.plot(kind='pie', figsize=(15, 12), legend=False, fontsize=12, rot=15,
                                  title='Type of variants', labels = None)
-    plot_type.legend(loc='best', bbox_to_anchor=(0, 0., 0.5, 0.5), labels=type_series.index)
+    plot_type.legend(loc='lower left', bbox_to_anchor=(0, 0), labels=type_series.index)
     fig_type = plot_type.get_figure()
     fig_type.savefig(os.path.join(output_path, (suffix + '_type')))
     fig_type.clear()
