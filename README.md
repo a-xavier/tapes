@@ -34,5 +34,5 @@ See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Man
 
 ___Coming Soon___...  
 - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
-- Add ```--by_gene``` report to files with only one sample. 
+- ~~Add ```--by_gene``` report to files with only one sample.~~ Done
 
