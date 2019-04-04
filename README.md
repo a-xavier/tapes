@@ -1,7 +1,7 @@
 # TAPES
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies
 
-Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) for more detailed explanations on every option.   
+Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for more detailed explanations on every option.   
   
 TAPES can:  
 - uses [ANNOVAR](annovar.openbioinformatics.org) (or [VEP](https://ensembl.org/info/docs/tools/vep/index.html)) annotated vcf/txt/csv files to prioritize variant, predict their pathogenicity (using both the ACMG Criteria and a direct pathogenicity probability ranked from 0 to 1).
