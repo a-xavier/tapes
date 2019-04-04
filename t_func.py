@@ -1,4 +1,13 @@
 #!usr/bin/env python3
+'''
+    Name: tapes.py
+    Author: Alexandre Xavier
+    Version; 0.1
+    Contact: alexandre.xavier@uon.edu.au
+    Python Version: 3.x
+    from https://github.com/a-xavier/tapes
+    Licence: MIT
+'''
 import subprocess
 import sys
 import os
