@@ -378,6 +378,9 @@ if __name__ == "__main__":
         if output_type == 'directory':
             print('|| Please specify output type : txt or csv')
 
+        if args.BIG is not None:
+            final_stuff = final_stuff[final_stuff['Probability_Path'] >= float(args.BIG)]
+
         if args.kegg is not None:
             tf.kegg_inverted_patway(args.kegg, final_stuff, ref_anno, acmg_db_path)
 
