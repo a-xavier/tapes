@@ -44,6 +44,7 @@ def open_csv_file(csv_file, acmg_db_path):
         try:
             dataframe = pd.read_csv(csv_file, low_memory=False)
             dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
+            soft_used = 'annovar'
         except errors.ParserError:
             tmp_file = csv_file+'_tmp.csv'
             print(tmp_stmp()+'Parser error, processing input file...', end="")
