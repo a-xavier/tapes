@@ -1453,7 +1453,7 @@ def check_PVS1_criteria(full_stuff, PVS1_list, splice_list, ref_anno, rek_dict):
             if exonic == 'stopgain' or exonic == 'frameshift deletion' or exonic == 'frameshift insertion' or exonic == \
                     'frameshift_deletion' or exonic == 'frameshift_insertion':
 
-                #TODO INCLUDE OR REMOVE VARIANTS CLOSE TO END OF THE GENE
+                # REMOVE VARIANTS CLOSE TO END OF THE GENE
                 if ref_anno == 'refGene':
                     #exon_nums = [x.replace('exon', '') for x in aa.split(':') if 'exon' in x]
                     trans_num = [x for x in aa.split(':') if 'NM_' in x]
@@ -1487,7 +1487,7 @@ def check_PVS1_criteria(full_stuff, PVS1_list, splice_list, ref_anno, rek_dict):
     return PVS1_contrib
 
 
-# TODO ADD -50bp of last exon to not do anything if null variant
+
 def check_PS1_criteria(full_stuff, PS1_dict,ref_anno):
     chr_series = full_stuff['Chr']
     ref_series = full_stuff['Ref']
@@ -1717,7 +1717,7 @@ def check_PM2(full_stuff, freq_exo_series, freq_geno_series, ref_anno):
     #  USE PLI SCORE FOR RECESSIVE DOMINANT CALLING
     #  Dominant / Haploinsufficient if pli score > 0.85
     #  Recessive if prec score > 0.85
-    #TODO INCLUDE IN PM2 DOMINANT VARIANT WITH MAF < 10e-6 (Probably means only one het individual in the cohort)
+    # INCLUDED IN PM2 DOMINANT VARIANT WITH MAF < 10e-6 (Probably means only one het individual in the cohort)
     for pli, prec, exo, geno in zip(pli_series, prec_series, freq_exo_series, freq_geno_series):
         #print('exo ' + str(exo) + " geno " + str(geno) + " pli "+ str(pli))
         if (pd.isna(exo) and pd.isna(geno) and pli >= 0.85) or (exo <= 0.000001 and geno <=0.000001 and pli >= 0.85) or \
@@ -2045,7 +2045,7 @@ def check_PP5(full_stuff):
     path_series = full_stuff['CLNSIG']
     PP5_contrib = []
     for pred in path_series:
-        if pred.lower().find('pathogenic') >= 0 or pred.lower().find('conflict') >= 0: # TODO INCLUDE OR NOT CONFLICTING
+        if pred.lower().find('pathogenic') >= 0 or pred.lower().find('conflict') >= 0: # INCLUDED CONFLICTING
             PP5_contrib.append(1)
         else:
             PP5_contrib.append(0)
@@ -2196,7 +2196,7 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
     PVS1_list, rek_dict, PS1_dict, BS2_hom_het_dict, rec_list, dom_list, adult_list, PS4_df, repeat_dict,\
     PP2_list, BP1_list, data_pm1, whole_dict = tup_database
 
-    # TODO REST INDEXES ?
+    # REST INDEXES 
     full_stuff.reset_index(drop=True, inplace=True)
 
     if 'chr' in str(full_stuff['Chr'].iloc[0]).lower():
@@ -2458,7 +2458,7 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
     except UnboundLocalError:
         pass
 
-    final_df = pd.concat([full_stuff, df_all], axis=1, sort=False) # TODO FIX THIS SHIT
+    final_df = pd.concat([full_stuff, df_all], axis=1, sort=False) 
 
     prob_series = pd.Series(prob_list)
     pred_series = pd.Series(pred_list)
@@ -2629,8 +2629,8 @@ def csv_report(full_stuff, output_path, suffix, ref_anno, tab_output):
         fig_pred = plot_pred.get_figure()
         fig_pred.savefig(os.path.join(output_path, (suffix + '_prediction')))
         fig_pred.clear()
-    except ModuleNotFoundError:
-        print('|| Module not found, try installing tkinter or matplotlib to generate charts')
+    except ModuleNotFoundError as e:
+        print('|| {} Module not found, try installing tkinter or matplotlib to generate charts'.format(e.name))
         pass
 
     try:
