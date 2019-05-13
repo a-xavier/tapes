@@ -22,6 +22,8 @@ from vcf_parser import VCFParser  # FROM https://github.com/moonso/vcf_parser
 import pandas as pd
 from pandas import errors
 from scipy.stats import fisher_exact
+import matplotlib
+matplotlib.use('Agg')
 from difflib import get_close_matches
 import vep_process as vp
 if 'win' not in sys.platform:

@@ -303,10 +303,16 @@ def main():
 if __name__ == "__main__":
     # Process data from annovar annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
     if (args.output and args.input and args.assembly) and args.option == ['sort']:
+        print('''
+        ***TAPES: SORT***
+        ''')
         main()
 
     # BUILD annovar DATABASES
     elif args.option == ['db'] and args.build_db is True:
+        print('''
+        ***TAPES: DOWNLOAD DATABASE***
+        ''')
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
@@ -326,6 +332,9 @@ if __name__ == "__main__":
 
     # ANNOTATE VCF FILE
     elif (args.input and args.output) is not None and args.option == ['annotate']:
+        print('''
+        ***TAPES: ANNOTATE***
+        ''')
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
@@ -349,6 +358,9 @@ if __name__ == "__main__":
     # SCAN annovar DATABASES ALREADY DOWNLOADED AND STORE THEM INSIDE OF A FILE
 
     elif args.option == ['db'] and args.see_db is True:
+        print('''
+        ***TAPES: SEE DATABASE***
+        ''')
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
@@ -365,12 +377,18 @@ if __name__ == "__main__":
 
     #  Decompose vcf
     elif args.option == ['decompose'] and args.input is not None and args.output is not None :
+        print('''
+        ***TAPES: DECOMPOSE***
+        ''')
         print(tf.tmp_stmp()+'Decomposing...', end=' ')
         tf.decompose_vcf(args.input, args.output)
         print(tf.tmp_stmp()+"Done")
 
     # Re-analyse TODO REFINE PROCESS for just the analysis wanted (don't do xlsx report)
     elif (args.output and args.input and args.assembly) and (args.option == ['analyse'] or args.option == ['analyze']):
+        print('''
+        ***TAPES: RE-ANALYSE***
+        ''')
         final_stuff, soft_used = tf.open_csv_file(args.input, acmg_db_path)
         ref_anno = args.ref_anno
         number_of_samples = tf.counting_number_of_samples(final_stuff)
