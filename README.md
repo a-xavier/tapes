@@ -35,9 +35,12 @@ See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Man
 
 #### Toy Dataset  
 You can test TAPES using the simultated datased located in the folder _Example_Output_.  
-Open a terminal and ```cd``` to the TAPES folder.  
-Then try pasting this command in the terminal and press enter:  
-```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```  
+Open a terminal and ```cd``` to the TAPES folder.   
+
+Then try pasting this command in the terminal and press enter:    
+
+```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```    
+
 This should create a folder called Toy_dataset containing various reports.
 
 
