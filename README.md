@@ -33,6 +33,14 @@ Using ```python``` or ```python3``` depending on your default installation:
 
 See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for the full range of options, functionalities and [required annotations](https://github.com/a-xavier/tapes/wiki/Necessary-Annotations).   
 
+#### Toy Dataset  
+You can test TAPES using the simultated datased located in the folder _Example_Output_.  
+Open a terminal and ```cd``` to the TAPES folder.  
+Then try pasting this command in the terminal and press enter:  
+```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```  
+This should create a folder called Toy_dataset containing various reports.
+
+
 :warning: __Warning on VEP annotated vcf :__ VEP annotated vcf might give different results compared to ANNOVAR annotated vcf, due to the difference in interpretation of consequences. ANNOVAR is still the preferred annotation tool to use with TAPES.
 
 ___Coming Soon___...  
