@@ -39,7 +39,8 @@ Open a terminal and ```cd``` to the TAPES folder.
 
 Then try pasting this command in the terminal and press enter:    
 
-```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```     
+```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```  
+
 If this does not work, try: 
 
 ```python3 tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```     
