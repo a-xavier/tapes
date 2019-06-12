@@ -23,7 +23,6 @@ import pandas as pd
 from pandas import errors
 from scipy.stats import fisher_exact
 import matplotlib
-matplotlib.use('Agg')
 from difflib import get_close_matches
 import vep_process as vp
 if 'win' not in sys.platform:
@@ -1561,7 +1560,7 @@ def check_PS3(full_stuff):
 def or_check(n_1, n_2, n_3, n_4):
     try:
         #OR =(n_1 * n_4) / (n_3 * n_2)
-        fish_test = fisher_exact([[n_1, n_2], [n_3, n_4]])
+        fish_test = fisher_exact([[n_1, n_2], [n_3, n_4]], alternative='greater') # Only testing for enrichment so one-sided test
         OR = fish_test[0]
         OR_sig = float("%.2f" % OR)
         SE_lnOR = sqrt((1 / n_1) + (1 / n_2) + (1 / n_3) + (1 / n_4))
