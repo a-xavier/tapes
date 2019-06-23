@@ -1568,7 +1568,7 @@ def or_check(n_1, n_2, n_3, n_4):
         # Down to 2 decimal digits
         confidence_interval_sig = (float("%.2f" % confidence_interval[0]), float("%.2f" % confidence_interval[1]))
         p_value = fish_test[1]
-        p_value = float("%.4f" % p_value)
+        p_value = float("%.3e" % p_value)
     except ZeroDivisionError:
         OR_sig = float('nan')
         confidence_interval_sig = float('nan')
