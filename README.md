@@ -80,6 +80,6 @@ __Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be cl
 
 **Assuming a frequency of 0.025 in the case cohort**
 
-
+![alt text](https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/New%20PS4%20calc.png "OR calculation")
 
 
