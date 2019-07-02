@@ -1569,6 +1569,34 @@ def or_check(n_1, n_2, n_3, n_4):
         confidence_interval_sig = (float("%.2f" % confidence_interval[0]), float("%.2f" % confidence_interval[1]))
         p_value = fish_test[1]
         p_value = float("%.3e" % p_value)
+        
+        # Calculate another Odds ration with lower n_3 to approach normal calculation values
+        # ASSIGN MODIFIED n_3 and n_4
+        n_3 = ceil(n_3/3) * 10 # Divide by 3 number of affected individuals in general pop and multiply by 10
+        n_4 = (n_4 * 10) - n_3 # Multiply by 10 and remove n_3
+
+        # This would transform a n_3 = 2 and n_4 = 1998 (0.001001001001)
+        # into a
+        # n_3 = 7 and n_3 = 19973  (0.000350473138737) minimizing the presence of the variant in the general population
+        # using the mean between these odds ratio calculations can offset the overly stringent OR calculation to something closer to reality
+
+        fish_test2 = fisher_exact([[n_1, n_2], [n_3, n_4]], alternative='greater')
+        OR2= fish_test2[0]
+        OR_sig2 = float("%.2f" % OR2)
+        SE_lnOR2 = sqrt((1 / n_1) + (1 / n_2) + (1 / (n_3)) + (1 / (n_4)))
+        confidence_interval2 = (exp(log1p(OR2) - (1.96 * SE_lnOR2)), exp(log1p(OR2) + (1.96 * SE_lnOR2)))
+        # Down to 2 decimal digits
+        confidence_interval_sig2 = (float("%.2f" % confidence_interval2[0]), float("%.2f" % confidence_interval2[1]))
+        p_value2 = fish_test2[1]
+        p_value2= float("%.4f" % p_value2)
+
+        # Make the mean of the 2 different OR calculations
+        OR_sig = (OR_sig + OR_sig2) / 2
+        confidence_interval_sig = ((confidence_interval_sig[0] + confidence_interval_sig2[0])/2 , (confidence_interval_sig[1] + confidence_interval_sig2[1])/2)
+        p_value = (fish_test[1] + fish_test2[1])/2
+        p_value = float("%.4f" % p_value)
+        
+        
     except ZeroDivisionError:
         OR_sig = float('nan')
         confidence_interval_sig = float('nan')
