@@ -55,7 +55,7 @@ ___Coming Soon___...
 - ~~Add ```--by_gene``` report to files with only one sample.~~ Done
 - ~~Better enrichement calculation for PS4 criteria assignment~~ Done 
 
-__Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be closer to the reality. In short the old extrapolation from MAF is first calculated and then another OR calculation is made using a smaller frequency in the control population. Then a mean between the 2 results is calculated. This transforms in (around) 30% less difference between the extrapolated OR and the reality. Keep in mind that TAPES OR calculation will always be more stringent than the normal calculation to avoid excessive false positive, meaning OR will always be lower (only enrichment is tested).
+__Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be closer to the reality. In short the old extrapolation from MAF is first calculated and then another OR calculation is made using a smaller frequency in the control population. Then a mean between the 2 results is calculated. This represents (around) 30% less difference between the extrapolated OR and the reality. Keep in mind that TAPES OR calculation will always be more stringent than the normal calculation to avoid excessive false positive, meaning OR will always be lower (only enrichment is tested).
 (see graph and table below)
 
 | Affected in general population | Unaffected in general population | Frequency | Normal OR calculation | Old TAPES extrapolation | New TAPES extrapolation |
