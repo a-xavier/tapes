@@ -53,4 +53,33 @@ This should create a folder called Toy_dataset containing various reports.
 ___Coming Soon___...  
 - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
 - ~~Add ```--by_gene``` report to files with only one sample.~~ Done
+- ~~Better enrichement calculation for PS4 criteria assignment~~ Done 
+
+__Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be closer to the reality. In short the old extrapolation from MAF is first calculated and then another OR calculation is made using a smaller frequency in the control population. Then a mean between the 2 results is calculated. This transforms in (around) 30% less difference between the extrapolated OR and the reality. (see graph and table below)
+
+| Affected in general population | Unaffected in general population | Frequency | Normal OR calculation | Old TAPES extrapolation | New TAPES extrapolation |
+|---|---|---|---|---|---|
+|1	|9999|	1.00E-04|	256.38|	128.18|	128.165|
+|2	|9998|	2.00E-04|	128.18|	64.08|	96.105|
+|3	|9997|	3.00E-04|	85.44|	42.71|	85.405|
+|4	|9996|	4.00E-04|	64.08|	32.03|	48.03|
+|5	|9995|	5.00E-04|	51.26|	25.62|	44.815|
+|6	|9994|	6.00E-04|	42.71|	21.34|	42.67|
+|7	|9993|	7.00E-04|	36.6|	18.29|	30.47|
+|8	|9992|	8.01E-04|	32.03|	16|	29.32|
+|9	|9991|	9.01E-04|	28.46|	14.22|	28.425|
+|99	|9901|	1.00E-02|	2.56|	1.26|	2.5|
+|100|	9900|	1.01E-02|	2.54|	1.26| 2.465|
+|101|	9899|	1.02E-02|	2.51|	1.26|	2.465|
+|102|	9898|	1.03E-02|	2.49|	1.26|	2.465|
+|103|	9897|	1.04E-02|	2.46|	1.26|	2.465|
+|104|	9896|	1.05E-02|	2.44|	1.26|	2.465|
+|105|	9895|	1.06E-02|	2.42|	0.62|	1.215|
+|106|	9894|	1.07E-02|	2.39|	0.62|	1.215|
+|107|	9893|	1.08E-02|	2.37|	0.62|	1.215|
+
+**Assuming a frequency of 0.025 in the case cohort**
+
+
+
 
