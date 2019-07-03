@@ -11,6 +11,12 @@ TAPES can:
 TAPES is mostly designed for mendelian diseases and exome studies of cohorts sharing a common phenotype but can prioritise any ANNOVAR annotated vcf file.
 
 TAPES is written for python3. You can use pip (pip3) for dependencies.
+
+### Download  
+
+Either use the download button [from the github website](https://github.com/a-xavier/tapes/archive/master.zip) in a browser or use the command:  
+```git clone https://github.com/a-xavier/tapes```
+
 ### Resolve dependencies 
 
 run ```pip3 install -r requirements.txt --user ```    
