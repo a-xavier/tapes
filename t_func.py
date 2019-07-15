@@ -621,7 +621,7 @@ def pathway_analysis(full_table, path_db, ref_anno):
             print('|| No Potentially Pathogenic variants detected, skipping EnrichR analysis...')
             return
 
-        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
+        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr3/addList'
         genes_str = '\n'.join(gene_name_list)
         description = 'Tapes gene list'
         payload = {
@@ -631,11 +631,12 @@ def pathway_analysis(full_table, path_db, ref_anno):
 
         response = requests.post(ENRICHR_URL, files=payload)
         if not response.ok:
-            raise Exception('Error analyzing gene list')
+            print('Error analyzing gene list: Upload failed')
+            return
 
         data_enrichr = json.loads(response.text)
 
-        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/enrich'
+        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr3/enrich'
         query_string = '?userListId=%s&backgroundType=%s'
         user_list_id = data_enrichr['userListId']
         gene_set_library = pathway_db_used
@@ -643,7 +644,8 @@ def pathway_analysis(full_table, path_db, ref_anno):
             ENRICHR_URL + query_string % (user_list_id, gene_set_library)
         )
         if not response.ok:
-            raise Exception('Error fetching enrichment results')
+            print('Error fetching enrichment results: Analysis failed')
+            return
 
         data_res = json.loads(response.text)
         data_res = data_res[pathway_db_used][0:11]
