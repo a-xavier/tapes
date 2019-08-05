@@ -9,15 +9,17 @@
 '''
 
 #!usr/bin/env python3
-import t_func as tf
+import sys
 import argparse
 import os
 import json
 from time import time
 from numpy import array_split
 from multiprocessing.pool import Pool
-import vep_process as vp
-import sys
+import src.vep_process as vp
+import src.t_func as tf
+
+
 
 
 parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help=False)
@@ -157,10 +159,11 @@ except FileNotFoundError:
 def main():
     start_time = time()
     output_type = tf.output_type(args.output)  # Determine output type either directory or csv or txt/tsv
+    # Do not discriminate by platform anymore so win users can also use normal slash
     if output_type == 'directory':
-        if 'win' not in sys.platform:
+        if '/' in args.output:
             output_prefix = args.output.split('/')[-2]
-        elif 'win' in sys.platform:
+        elif '\\' in args.output:
             output_prefix = args.output.split('\\')[-2]
 
     file_path = tf.process_path(args.input)  # process relative to absolute path
