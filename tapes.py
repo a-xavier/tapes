@@ -152,7 +152,7 @@ if args.option == ['test']:
     r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/test_input.csv')
     with open("./test_input.csv", 'w') as file:
         file.write(r.text)
-    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', 'by_gene' , 'by_sample', '--list"FH CDC73"', '--kegg"Pathways in cancer"', '--disease"autosomal dominant"'])
+    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample', '--list "FH CDC73"', '--kegg "Pathways in cancer"', '--disease "autosomal dominant"'])
 else:
     args = parser.parse_args()
 
