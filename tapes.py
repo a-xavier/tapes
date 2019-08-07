@@ -31,7 +31,7 @@ parser.add_argument('option', type=str, nargs=1,
                          "sort: use tapes to prioritise variants\n"
                          "db: see or download databases\n"
                          "analyse: use an already analysed file to produce a specific report",
-                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze', 'test'])
+                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze'])
 
 parser.add_argument('-i', '--input',
                     required=False,
@@ -65,7 +65,7 @@ parser.add_argument('-e', '--enrichr',
                     required=False)
 
 parser.add_argument("-d", "--disease",
-                    help="exclude genes non involved in specified disease (based on Disease column description in a new"
+                    help="excluse genes non involved in specified disease (based on Disease column description in a new"
                          " spreadsheet in xlsx file, use quotes '' to use a multiple words term (eg; 'multiple sclerosis' "
                          "Default = cancer",
                     nargs="?", const="cancer",
@@ -141,18 +141,23 @@ parser.add_argument('--bp1_percent',
                     default=15,
                     required=False)
 parser.add_argument("--test",
-                    help="test flag",
+                    help="test flag - Will override all options and run a test of the sort function",
                     action='store_true',
                     required=False)
 
 
 args = parser.parse_args()
 
-if args.option == ['test']:
+if args.test == True:
     r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/test_input.csv')
     with open("./test_input.csv", 'w') as file:
         file.write(r.text)
-    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample', '--disease'])
+    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
+    args.list = "FH CDC73"
+    args.kegg = "Pathways in cancer"
+    args.disease = "autosomal dominant"
+    for item in vars(args):
+        print(item, '=', getattr(args, item))
 else:
     args = parser.parse_args()
 
