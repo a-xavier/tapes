@@ -18,6 +18,7 @@ from numpy import array_split
 from multiprocessing.pool import Pool
 import src.vep_process as vp
 import src.t_func as tf
+import requests
 
 
 
@@ -30,7 +31,7 @@ parser.add_argument('option', type=str, nargs=1,
                          "sort: use tapes to prioritise variants\n"
                          "db: see or download databases\n"
                          "analyse: use an already analysed file to produce a specific report",
-                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze'])
+                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze', 'test'])
 
 parser.add_argument('-i', '--input',
                     required=False,
@@ -139,8 +140,22 @@ parser.add_argument('--bp1_percent',
                     help='Threshold for BP1, considering BP1 positive if variant is missense in a gene where less than the threshold are pathogenic missense', type=int,
                     default=15,
                     required=False)
+parser.add_argument("--test",
+                    help="test flag",
+                    action='store_true',
+                    required=False)
+
 
 args = parser.parse_args()
+
+if args.option == ['test']:
+    r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/test_input.csv')
+    with open("./test_input.csv", 'w') as file:
+        file.write(r.text)
+    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test'])
+else:
+    args = parser.parse_args()
+
 
 # PROCESS ACMG_DB PATH
 try:
@@ -303,7 +318,16 @@ def main():
     print('|| Process finished in ' + str(tf.ceil(stop_time - start_time)) + " seconds")
 
 
+def test_main():
+    print("ACTIVATING MAIN TEST")
+    main()
+    sys.exit(0)
+
+
 if __name__ == "__main__":
+    if args.test == True:
+        test_main()
+
     # Process data from annovar annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
     if (args.output and args.input and args.assembly) and args.option == ['sort']:
         print('''
