@@ -65,7 +65,7 @@ parser.add_argument('-e', '--enrichr',
                     required=False)
 
 parser.add_argument("-d", "--disease",
-                    help="excluse genes non involved in specified disease (based on Disease column description in a new"
+                    help="exclude genes non involved in specified disease (based on Disease column description in a new"
                          " spreadsheet in xlsx file, use quotes '' to use a multiple words term (eg; 'multiple sclerosis' "
                          "Default = cancer",
                     nargs="?", const="cancer",
@@ -152,7 +152,7 @@ if args.option == ['test']:
     r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/test_input.csv')
     with open("./test_input.csv", 'w') as file:
         file.write(r.text)
-    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample', '--list "FH CDC73"', '--kegg "Pathways in cancer"', '--disease "autosomal dominant"'])
+    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample', '--disease'])
 else:
     args = parser.parse_args()
 
