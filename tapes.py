@@ -149,7 +149,7 @@ parser.add_argument("--test",
 args = parser.parse_args()
 
 if args.test == True:
-    r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/master/Example_Output/test_input.csv')
+    r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/testing/toy_dataset/test_input.csv')
     with open("./test_input.csv", 'w') as file:
         file.write(r.text)
     args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
