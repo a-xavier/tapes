@@ -30,7 +30,7 @@ It can be called ```python3-tk``` for debian/ubuntu/fedora or just ```tk``` on a
 
 ## Quick start : prioritisation  
 
-See the [QUICK START](https://github.com/a-xavier/tapes/wiki/Quick-Start) section on the wiki.
+See the [QUICK START](https://github.com/a-xavier/tapes/wiki/Quick-Start) or the [WORKFLOW](https://github.com/a-xavier/tapes/wiki/Workflow)  section on the wiki.
 
 Using ```python``` or ```python3``` depending on your default installation:
 
