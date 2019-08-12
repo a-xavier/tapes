@@ -20,6 +20,15 @@ The ANNOVAR interface will only work on UNIX due to ANNOVAR compatibility.
 
 TAPES was written and tested on python3.7 and will work on any python3 version.
 
+Setting up a virtual environment using python3 on Linux or windows: 
+
+ - ```cd``` to the TAPES directory
+ - ```python3 -m venv tapes_env``` creating a virtual environment called 'tapes_env'
+ - ```source env/bin/activate``` Activate the virtual environment (```.\env\Scripts\activate``` on windows)
+ - ```pip3 install -r requirements.txt --user``` to install dependencies (winrequirements.txt on windows)
+ - [Use TAPES](https://github.com/a-xavier/tapes/wiki/Quick-Start)
+ - ```deactivate``` to leave the virtual environment
+
 1. 1)QUICK START
 
 Choose a starting point:
