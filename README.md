@@ -1,3 +1,4 @@
+
 # TAPES  [![Build Status](https://travis-ci.org/a-xavier/tapes.svg?branch=master)](https://travis-ci.org/a-xavier/tapes)
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies
 
@@ -20,12 +21,16 @@ Either use the download button [from the github website](https://github.com/a-xa
 
 ### Resolve dependencies 
 
-run ```pip3 install -r requirements.txt --user ```    
+run ```pip3 install -r requirements.txt --user ``` on Linux/macOS  
+
+run ```pip3 install -r winrequirements.txt --user ``` on Windows
   
 :warning:Depending on your distribution, installing **tkinter** might be necessary to generate graphs.  
 It can be called ```python3-tk``` for debian/ubuntu/fedora or just ```tk``` on arch-based linux.
 
-## Quick start : prioritisation
+## Quick start : prioritisation  
+
+See the [QUICK START](https://github.com/a-xavier/tapes/wiki/Quick-Start) section on the wiki.
 
 Using ```python``` or ```python3``` depending on your default installation:
 
@@ -41,16 +46,16 @@ Using ```python``` or ```python3``` depending on your default installation:
 See [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for the full range of options, functionalities and [required annotations](https://github.com/a-xavier/tapes/wiki/Necessary-Annotations).   
 
 #### Toy Dataset  
-You can test TAPES using the simultated datased located in the folder _Example_Output_.  
+You can test TAPES using the simultated datased located in the folder _toy_dataset_.  
 Open a terminal and ```cd``` to the TAPES folder.   
 
 Then try pasting this command in the terminal and press enter:    
 
-```python tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```  
+```python tapes.py sort -i ./toy_dataset/toy_vep_multi.vcf -o ./report/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```  
 
 If this does not work, try: 
 
-```python3 tapes.py sort -i ./Example_Output/input.csv -o ./Toy_dataset/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```     
+```python3 tapes.py sort -i ./toy_dataset/toy_vep_multi.vcf -o ./report/ --tab --by_gene --by_sample --enrichr --disease "autosomal dominant" --kegg "Pathways in cancer"```     
 
 This should create a folder called Toy_dataset containing various reports.
 
@@ -60,7 +65,11 @@ This should create a folder called Toy_dataset containing various reports.
 ___Coming Soon___...  
 - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
 - ~~Add ```--by_gene``` report to files with only one sample.~~ Done
-- ~~Better enrichement calculation for PS4 criteria assignment~~ Done 
+- ~~Better enrichement calculation for PS4 criteria assignment~~ Done  
+- Output VCF files
+- Analysing InterVar output files
+- Using real control samples for OR calculation/PS4
+- Docker image creation
 
 __Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be closer to the reality. In short the old extrapolation from MAF is first calculated and then another OR calculation is made using a smaller frequency in the control population. Then a mean between the 2 results is calculated. This represents (around) 30% less difference between the extrapolated OR and the reality. Keep in mind that TAPES OR calculation will always be more stringent than the normal calculation to avoid excessive false positive, meaning OR will (nearly) always be lower (only enrichment is tested).
 (see graph and table below)
