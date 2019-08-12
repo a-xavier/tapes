@@ -1,4 +1,5 @@
-# TAPES [![Build Status](https://travis-ci.org/a-xavier/tapes.svg?branch=testing)](https://travis-ci.org/a-xavier/tapes)
+
+# TAPES  [![Build Status](https://travis-ci.org/a-xavier/tapes.svg?branch=master)](https://travis-ci.org/a-xavier/tapes)
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies
 
 Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for more detailed explanations on every option.   
