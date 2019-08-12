@@ -9,7 +9,8 @@ TAPES can:
 - generate useful reports in multi-sample vcf/cohorty studies
 - be used as an simplified interface for ANNOVAR.
 
-Please note that TAPES does not require an ANNOVAR installation to sort already annotated files.  
+
+Please note that TAPES does not require an ANNOVAR installation to sort already annotated files (but it is recommended to take advantage of all TAPES functionalities).  
 TAPES is mostly designed for mendelian diseases and exome studies of cohorts sharing a common phenotype but can prioritise any ANNOVAR annotated vcf file.
 
 TAPES is written for python3. You can use pip (pip3) for dependencies.
