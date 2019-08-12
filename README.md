@@ -68,6 +68,7 @@ ___Coming Soon___...
 - Output VCF files
 - Analysing InterVar output files
 - Using real control samples for OR calculation/PS4
+- Docker image creation
 
 __Odds Ratio (OR) calculation (for PS4 criteria) was recently changed__ to be closer to the reality. In short the old extrapolation from MAF is first calculated and then another OR calculation is made using a smaller frequency in the control population. Then a mean between the 2 results is calculated. This represents (around) 30% less difference between the extrapolated OR and the reality. Keep in mind that TAPES OR calculation will always be more stringent than the normal calculation to avoid excessive false positive, meaning OR will (nearly) always be lower (only enrichment is tested).
 (see graph and table below)
