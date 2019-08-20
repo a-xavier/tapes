@@ -378,7 +378,6 @@ def load_vep_databases(acmg_db_path, assembly, ref_anno, trio_data, pp2_percent,
     BP1_list, 
     data_pm1, 
     whole_dict)
-    print(whole_dict)
     
     return tup_databases
 
