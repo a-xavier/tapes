@@ -1,0 +1,15 @@
+m	hs23	Sample_1
+f	hs23	Sample_2
+o	hs23	Sample_3
+m	ki45	Sample_4
+f	ki45	Sample_5
+o	ki45	Sample_6
+m	pp88	Sample_7
+f	pp88	Sample_8
+o	pp88	Sample_9
+m	or65	Sample_10
+f	or65	Sample_11
+o	or65	Sample_12
+m	or66	Sample_13
+f	or66	Sample_14
+o	or66	Sample_15
