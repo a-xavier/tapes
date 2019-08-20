@@ -622,7 +622,7 @@ def pathway_analysis(full_table, path_db, ref_anno):
             print('|| No Potentially Pathogenic variants detected, skipping EnrichR analysis...')
             return
 
-        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr3/addList'
+        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
         genes_str = '\n'.join(gene_name_list)
         description = 'Tapes gene list'
         payload = {
@@ -637,7 +637,7 @@ def pathway_analysis(full_table, path_db, ref_anno):
 
         data_enrichr = json.loads(response.text)
 
-        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr3/enrich'
+        ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/enrich'
         query_string = '?userListId=%s&backgroundType=%s'
         user_list_id = data_enrichr['userListId']
         gene_set_library = pathway_db_used
@@ -3231,7 +3231,10 @@ def load_databases(acmg_db_path, ref_anno, assembly, trio_data, pp2_percent, pp2
     tup_database = (PVS1_list
     , rek_dict
     , PS1_dict
-    , BS2_hom_het_dict, rec_list, dom_list, adult_list
+    , BS2_hom_het_dict
+    , rec_list
+    , dom_list
+    , adult_list
     , PS4_df
     , repeat_dict
     , PP2_list
@@ -3313,10 +3316,10 @@ def process_df_for_trio(tup_databases, full_stuff):
     list_healthy = []
     list_affected = []
 
-    for key, value in tup_databases[13].items():
-        list_healthy.append(tup_databases[13][key]['m'])
-        list_healthy.append(tup_databases[13][key]['f'])
-        list_affected.append(tup_databases[13][key]['o'])
+    for key, value in tup_databases[12].items():
+        list_healthy.append(tup_databases[12][key]['m'])
+        list_healthy.append(tup_databases[12][key]['f'])
+        list_affected.append(tup_databases[12][key]['o'])
 
     list_healthy = list(set(list_healthy))
     list_affected = list(set(list_affected))

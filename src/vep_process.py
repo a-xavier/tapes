@@ -152,7 +152,7 @@ def vep_process_vcf(vcf_path, acmg_db_path):
             dis_list.append(dis_dict[gene])
         except KeyError:
             dis_list.append('.')
-    info_df['Disease_description'] = dis_list
+    info_df['Disease_description.{}'.format(ref_anno)] = dis_list
 
     #info_df.to_csv('/home/alex/Desktop/info_df.txt', sep='\t', index=False)
 
@@ -365,7 +365,20 @@ def load_vep_databases(acmg_db_path, assembly, ref_anno, trio_data, pp2_percent,
 
     print("Done")
     
-    tup_databases = (PVS1_list, rek_dict, PS1_dict, whole_dict, PS4_df, data_pm1, repeat_dict, PP2_list, BP1_list, BS2_hom_het_dict , rec_list, dom_list, adult_list)
+    tup_databases = (PVS1_list, 
+    rek_dict, 
+    PS1_dict, 
+    BS2_hom_het_dict ,
+    rec_list, 
+    dom_list, 
+    adult_list,
+    PS4_df, 
+    repeat_dict, 
+    PP2_list, 
+    BP1_list, 
+    data_pm1, 
+    whole_dict)
+    print(whole_dict)
     
     return tup_databases
 
@@ -985,8 +998,8 @@ def check_vep_PP3_and_BP4_dbnsfp(full_stuff):
 def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
     # Load all databases
     print(tf.tmp_stmp()+'Starting...')
-    PVS1_list, rek_dict, PS1_dict, whole_dict, PS4_df, data_pm1, repeat_dict, PP2_list, BP1_list, BS2_hom_het_dict ,\
-    rec_list, dom_list, adult_list = tup_database
+    PVS1_list, rek_dict, PS1_dict, BS2_hom_het_dict, rec_list, dom_list,\
+     adult_list, PS4_df, repeat_dict, PP2_list, BP1_list, data_pm1, whole_dict = tup_database
 
     # TODO REST INDEXES ?
     full_stuff.reset_index(drop=True, inplace=True)
