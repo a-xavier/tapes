@@ -156,6 +156,7 @@ if args.test == True:
     args.list = "FH CDC73"
     args.kegg = "Pathways in cancer"
     args.disease = "autosomal dominant"
+    args.trio = "./toy_dataset/trio.txt"
     for item in vars(args):
         print(item, '=', getattr(args, item))
 else:
