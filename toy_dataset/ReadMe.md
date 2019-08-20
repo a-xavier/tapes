@@ -20,6 +20,6 @@ Zhang J, Walsh MF, Wu G, Edmonson MN, Gruber TA, Easton J, et al. Germline Mutat
   
 -- VEP or ANNOVAR annotated file
   - I want to sort and prioritise my VCF file
-    - ```python tapes.py sort -i ./toy_dataset/toy_annovar_multi.vcf  –o ./toy_report/ --tab --by_gene --by_sample --enrichr --disease      "autosomal dominant" --kegg "Pathways in cancer" --list "MLH1 MSH2 MSH6" --BIG```
+    - ```python tapes.py sort -i ./toy_dataset/toy_annovar_multi.vcf  -o ./toy_report/ --tab --by_gene --by_sample --enrichr --disease      "autosomal dominant" --kegg "Pathways in cancer" --list "MLH1 MSH2 MSH6" --BIG```
 
  
