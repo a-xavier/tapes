@@ -1,7 +1,7 @@
 
 # TAPES  [![Build Status](https://travis-ci.org/a-xavier/tapes.svg?branch=master)](https://travis-ci.org/a-xavier/tapes)
-**TAPES** : a Tool for Assessment and Prioritisation in Exome Studies
-[Download](https://github.com/a-xavier/tapes#download)|[Quick Start](https://github.com/a-xavier/tapes#quick-start--prioritisation)|[Dependencies](https://github.com/a-xavier/tapes#resolve-dependencies)|[Comming Soon]()
+**TAPES** : a Tool for Assessment and Prioritisation in Exome Studies  
+[Download](https://github.com/a-xavier/tapes#download) | [Quick Start](https://github.com/a-xavier/tapes#quick-start--prioritisation) | [Dependencies](https://github.com/a-xavier/tapes#resolve-dependencies) | [Comming Soon](https://github.com/a-xavier/tapes/blob/testing/README.md#coming-soon)
 
 Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for more detailed explanations on every option.   
   
