@@ -18,7 +18,6 @@ from numpy import array_split
 from multiprocessing.pool import Pool
 import src.vep_process as vp
 import src.t_func as tf
-import requests
 
 
 
@@ -149,10 +148,7 @@ parser.add_argument("--test",
 args = parser.parse_args()
 
 if args.test == True:
-    r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/testing/toy_dataset/test_input.csv')
-    with open("./test_input.csv", 'w') as file:
-        file.write(r.text)
-    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
+    args = parser.parse_args(['sort','-i./toy_dataset/test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
     args.list = "FH CDC73"
     args.kegg = "Pathways in cancer"
     args.disease = "autosomal dominant"
