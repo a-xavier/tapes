@@ -1,6 +1,7 @@
 
 # TAPES  [![Build Status](https://travis-ci.org/a-xavier/tapes.svg?branch=master)](https://travis-ci.org/a-xavier/tapes)
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies
+[Download](https://github.com/a-xavier/tapes#download)|[Quick Start](https://github.com/a-xavier/tapes#quick-start--prioritisation)|[Dependencies](https://github.com/a-xavier/tapes#resolve-dependencies)|[Comming Soon]()
 
 Please refer to the [Instruction Manual](https://github.com/a-xavier/tapes/blob/master/TAPES_Manual.pdf) or the [Wiki](https://github.com/a-xavier/tapes/wiki) for more detailed explanations on every option.   
   
@@ -62,7 +63,7 @@ This should create a folder called Toy_dataset containing various reports.
 
 :warning: __Warning on VEP annotated vcf :__ VEP annotated vcf might give different results compared to ANNOVAR annotated vcf, due to the difference in interpretation of consequences. ANNOVAR is still the preferred annotation tool to use with TAPES.
 
-___Coming Soon___...  
+#### ___Coming Soon___...  
 - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
 - ~~Add ```--by_gene``` report to files with only one sample.~~ Done
 - ~~Better enrichement calculation for PS4 criteria assignment~~ Done  
