@@ -146,7 +146,7 @@ args = parser.parse_args()
 
 
 if args.test == True:
-    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
+    args = parser.parse_args(['sort','-i./toy_dataset/test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
     args.list = "FH CDC73"
     args.kegg = "Pathways in cancer"
     args.disease = "autosomal dominant"
