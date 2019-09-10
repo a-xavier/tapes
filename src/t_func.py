@@ -163,7 +163,7 @@ def build_annovar_db(path_to_annovar_folder_rel, assembly, acmg_tag):
             if os.path.isfile("example/gene_fullxref_tapes.txt"):
                 print(tmp_stmp()+"Found tapes xref file")
             else:
-                print('Processing full_xref file to full_xref_tapes. Please wait...')
+                print('Processing full_xref file to full_xref_tapes. Please wait...', end = ' ')
                 subprocess.run(["""tr -d '"' <example/gene_fullxref.txt > example/gene_fullxref_tapes.txt"""], shell=True)
                 print('Done')
 
@@ -271,11 +271,16 @@ def process_annotate_vcf(vcf_path, output_path, path_to_annovar_folder_rel, asse
 
     output_path_only = output_path_abs.replace(output_name, '')
 
-    vcf_db_file = os.path.join(os.getcwd(), 'db_vcf.json')
+    vcf_db_file = os.path.join(os.getcwd(), 'src/db_vcf.json')
     if os.path.isdir(path_to_annovar_folder):
         os.chdir(path_to_annovar_folder)
-        if os.path.isfile('convert2annovar.pl') and os.path.isfile('table_annovar.pl') and os.path.isfile('example/gene_fullxref_tapes.txt'):
+        if os.path.isfile('convert2annovar.pl') and os.path.isfile('table_annovar.pl'):
             print('Found convert2annovar.pl / table_annovar.pl and the tapes version of fullxref')
+            
+            if not os.path.isfile('example/gene_fullxref_tapes.txt') :
+                print('Processing full_xref file to full_xref_tapes. Please wait...', end = ' ')
+                subprocess.run(["""tr -d '"' <example/gene_fullxref.txt > example/gene_fullxref_tapes.txt"""], shell=True)
+                print('Done')
 
             vcf_path_abs = process_input_variant_file(vcf_path_abs)
             decomp_test = test_if_decomposed(vcf_path_abs)
@@ -2622,7 +2627,6 @@ def output_type(output_arg):
     elif output_arg[-4:] == '.txt' or output_arg[-4:] == '.tsv':
         print(tmp_stmp()+'Output type: TXT/TSV + XLSX')
         return 'txt'
-
     else:
         print(tmp_stmp()+'Could not determine output type. Exiting...')
         sys.exit(1)

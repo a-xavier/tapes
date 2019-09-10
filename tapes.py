@@ -18,9 +18,7 @@ from numpy import array_split
 from multiprocessing.pool import Pool
 import src.vep_process as vp
 import src.t_func as tf
-
-
-
+import requests
 
 parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help=False)
 
@@ -147,8 +145,12 @@ parser.add_argument("--test",
 
 args = parser.parse_args()
 
+
 if args.test == True:
-    args = parser.parse_args(['sort','-i./toy_dataset/test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
+    r = requests.get('https://raw.githubusercontent.com/a-xavier/tapes/testing/toy_dataset/test_input.csv')
+    with open("./test_input.csv", 'w') as file:
+        file.write(r.text)
+    args = parser.parse_args(['sort','-i./test_input.csv', '-o./test_output/', '--tab', '--test', '--enrichr', '--by_gene' , '--by_sample'])
     args.list = "FH CDC73"
     args.kegg = "Pathways in cancer"
     args.disease = "autosomal dominant"
@@ -157,11 +159,30 @@ if args.test == True:
         print(item, '=', getattr(args, item))
 else:
     args = parser.parse_args()
+    
+# Process paths to transform into absolute 
+if args.annovar:
+    args.annovar = os.path.abspath(args.annovar)
+if args.input != None:
+    args.input = os.path.abspath(args.input)
+if args.output != None:
+    if args.output[-4:] == ('.csv' or '.vcf' or '.txt' or '.tsv'):
+        args.output = os.path.abspath(args.output)
+    elif args.output[-1] == '/':
+        args.output = (os.path.abspath(args.output)+'/')
+    elif args.output[-1] =='\\':
+        args.output = (os.path.abspath(args.output)+'\\')
+    else:
+        pass
+
+# Convert inputs and outputs into absolute paths
+script_absolute_path = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_absolute_path)
 
 
 # PROCESS ACMG_DB PATH
 try:
-    with open('db_config.json', 'r') as db_cfg:
+    with open('./src/db_config.json', 'r') as db_cfg:
         cfg_dict = json.load(db_cfg)
     try:
         acmg_db_path = cfg_dict["acmg_db_path"]['acmg_db_path']
@@ -331,7 +352,7 @@ if __name__ == "__main__":
         test_main()
 
     # Process data from annovar annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
-    if (args.output and args.input and args.assembly) and args.option == ['sort']:
+    elif (args.output and args.input and args.assembly) and args.option == ['sort']:
         print('''
         ***TAPES: SORT***
         ''')
@@ -345,7 +366,7 @@ if __name__ == "__main__":
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
-                with open('db_config.json', 'r') as db_cfg:
+                with open('./src/db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
@@ -367,7 +388,7 @@ if __name__ == "__main__":
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
-                with open('db_config.json', 'r') as db_cfg:
+                with open('./src/db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
@@ -393,12 +414,13 @@ if __name__ == "__main__":
         # PROCESS annovar PATH
         if args.annovar is None:  # If annovar folder not supplied, look at the config file
             try:
-                with open('db_config.json', 'r') as db_cfg:
+                with open('./src/db_config.json', 'r') as db_cfg:
                     cfg_dict = json.load(db_cfg)
                 annovar_path = cfg_dict["annovar_path"]['annovar_path']
             except FileNotFoundError:
                 print("No annovar path given and no db_config.json found")
         else:
+            args.annovar = os.path.abspath(args.annovar)
             annovar_path = args.annovar
         tf.check_online_annovar_dbs(annovar_path)
         tf.scan_for_db(annovar_path)
