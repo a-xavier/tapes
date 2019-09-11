@@ -6,13 +6,13 @@ Please refer to the [WIKI](https://github.com/a-xavier/tapes/wiki) for more info
 See [HERE for installation and dependencies resolutions]().
 
 ## TAPES purpose
-TAPES is a tools written in __python3__ designed to __predict pathogenicity__ of variants in exome studies.
+TAPES is a tools written in __python3__ designed to __predict pathogenicity__ of variants in __exome studies__.
 It is especially designed for small scalle exome studies (from dozens to a few hundreds) sharing a common trait/phenotype.
 TAPES can also handle __trio data__ with healthy parents and __calculate variant enrichment__ compared to the general population wwithout the use of controls. 
 
 ## TAPES WORKFLOW 
 
-__Unnanotated VCF__ --Annotate--> __Annotated VCF__ --Sort--> __Reports__
+__Unnanotated VCF__ --```Annotate```--> __Annotated VCF__ --```Sort```--> __Reports__  
 TAPES recommanded input is a multi-sample vcf or bcf file.
 
 #### Toy dataset
@@ -22,7 +22,7 @@ TAPES recommanded input is a multi-sample vcf or bcf file.
 ![Workflow Diagram](https://raw.githubusercontent.com/a-xavier/tapes/testing/acmg_db/workflow.png)
 ## TAPES Functionalities
 ### ANNOVAR interface
-TAPES can be used as an [ANNOVAR](annovar.openbioinformatics.org) wrapper for easy VCF/gzipped VCF/BCF annotation. 
+TAPES can be used as an [ANNOVAR](annovar.openbioinformatics.org) wrapper for easy VCF/gzipped VCF/BCF annotation (this requires to download ANNOVAR). 
 
 ```python3 tapes.py db -s -A /path/to/annovar/```  to scan the annovar path for existing databases  
 ```python3 tapes.py db -b --acmg -a hg19```    to download all necessary databases  
@@ -37,8 +37,8 @@ TAPES can predict the pathogenicity of variants (using [ANNOVAR](https://github.
   to sort and prioritise an annotated vcf.
   
   #### PS4 criteria/ Variant enrichment calculation
-  TAPES can calculate the enrichment of variants in a population sharing the same phenotype without the need for variants.
-  Check the details [HERE]().
+  TAPES can calculate the enrichment of variants in a population sharing the same phenotype without the need for controls, using public databases and extrapolating the number of individuals affected/non-affected by a variant using Minor Allele Frequencies from public databases.  
+  [Check the details HERE](https://github.com/a-xavier/tapes/wiki/PS4-calculation).
   ### Reporting options
   TAPES provides an [array of useful reports]() on top of the main report (which will prioritise variants based on predicted pathogenicity)
   #### Filtering options   
