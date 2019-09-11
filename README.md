@@ -17,7 +17,7 @@ TAPES recommanded input is a multi-sample vcf or bcf file.
 
 #### Toy dataset
 
-[Follow the instructions here to try TAPES' workflow using a toy dataset.]()
+[Follow the instructions here to try TAPES' workflow using a toy dataset.](https://github.com/a-xavier/tapes/wiki/Workflow)
 
 ![Workflow Diagram](https://raw.githubusercontent.com/a-xavier/tapes/testing/acmg_db/workflow.png)
 ## TAPES Functionalities
