@@ -3,7 +3,7 @@
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies  
 
 Please refer to the [WIKI](https://github.com/a-xavier/tapes/wiki) for more information on all TAPES functions.  
-See [HERE for installation and dependencies resolutions]().
+See [HERE for installation and dependencies resolutions](https://github.com/a-xavier/tapes/wiki/Installation-and-Dependencies).
 
 ## TAPES purpose
 TAPES is a tools written in __python3__ designed to __predict pathogenicity__ of variants in __exome studies__.
