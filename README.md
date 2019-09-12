@@ -21,7 +21,7 @@ TAPES recommanded input is a multi-sample vcf or bcf file.
 
 ![Workflow Diagram](https://raw.githubusercontent.com/a-xavier/tapes/testing/acmg_db/workflow.png)
 ## TAPES Functionalities
-### ANNOVAR interface
+### ANNOVAR interface (Linux only)
 TAPES can be used as an [ANNOVAR](annovar.openbioinformatics.org) wrapper for easy VCF/gzipped VCF/BCF annotation (this requires to download ANNOVAR). 
 
 ```python3 tapes.py db -s -A /path/to/annovar/```  to scan the annovar path for existing databases  
@@ -50,13 +50,16 @@ TAPES can predict the pathogenicity of variants (using [ANNOVAR](https://github.
      to filter the main report based on a kegg pathway (eg. "Pathways in cancer" or "base excision repair")
   
   #### By-gene report
-  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --by_gene```  
+  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --by_gene```    
+  to create a by gene report with an associated gene mutational burden score.
   
   #### Pathway analysis
-  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --enrichr GO_Biological_Process_2018``` 
+  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --enrichr GO_Biological_Process_2018```   
+  to perfome pathway analysis with genes containing pathogenic variants.
   
   #### By-sample report
-  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --by_sample```   
+  ```python3 tapes.py sort -i /path/to/annotated_file.vcf -o /path/to/output/ --by_sample```     
+  to create a table of the most pathogenic variants per individual.
   
   ### Coming soon
   - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
