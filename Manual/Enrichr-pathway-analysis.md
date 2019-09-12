@@ -1,0 +1,30 @@
+# --enrichr
+
+(default is: GO_Biological_Process_2018)  
+  
+usage :  
+
+```python3 tapes.py sort -i ./input.vcf -o ./output_folder/ --enrichr GO_Molecular_Function_2018```  
+```python3 tapes.py sort -i ./input.vcf -o ./output_folder/ -e GO_Molecular_Function_2018```
+
+By using the option ```-e``` or ```--enrichr``` ([see here for possible libraries](https://github.com/a-xavier/tapes/wiki/EnrichR-Libraries)) with the ```analyse``` or ```sort``` option, you will generate a report containing a pathway analysis of the genes containing probably pathogenic variants.
+
+This generates a list of genes containing at least one probably pathogenic variant (probability of pathogenicity >= 0.85) and perform a pathway analysis using this gene-list.
+
+Return the 11 most relevant pathways.
+
+## Example  
+
+| Name                                                   | P-value              | Z-score          | Combined score   | Genes                                                                                                                                                                                                                                                    | Adjusted p-value     |
+|--------------------------------------------------------|----------------------|------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|
+| DNA repair (GO:0006281)                                | 8.63170430969103E-36 | 29.5135355180134 | 2382.8526561072  | ['BLM', 'XPC', 'BRCA1', 'BRCA2', 'BRIP1', 'WRN', 'PMS2', 'MUTYH', 'MEN1', 'FANCI', 'FANCM', 'FANCL', 'FANCA', 'FANCC', 'MLH1', 'FANCE', 'PALB2', 'FANCG', 'FANCF', 'DDB2', 'MSH6', 'RAD51C', 'MSH2', 'ERCC3', 'FANCD2', 'ERCC4', 'ERCC2', 'ATM', 'TP53'] | 4.40475870923533E-32 |
+| DNA metabolic process (GO:0006259)                     | 6.50418472260338E-25 | 21.4752567693744 | 1196.00389886776 | ['BLM', 'FANCL', 'FANCA', 'FANCC', 'XPC', 'BRCA1', 'BRCA2', 'PALB2', 'FANCG', 'DDB2', 'MSH6', 'BRIP1', 'WRN', 'RAD51C', 'MSH2', 'TERT', 'ERCC3', 'FANCD2', 'ERCC4', 'ATM', 'TP53', 'MUTYH', 'MEN1']                                                      | 1.65954273197225E-21 |
+| cellular response to DNA damage stimulus (GO:0006974)  | 1.81431960508728E-21 | 18.716577540107  | 893.877098932342 | ['BLM', 'FANCL', 'FANCA', 'FANCC', 'XPC', 'BRCA1', 'FANCG', 'DDB2', 'MSH6', 'BRIP1', 'WRN', 'RAD51C', 'MSH2', 'APC', 'ERCC3', 'FANCD2', 'ERCC4', 'ATM', 'TP53', 'MUTYH', 'MEN1']                                                                         | 3.08615764825346E-18 |
+| interstrand cross-link repair (GO:0036297)             | 7.65092206204837E-16 | 60.0240096038415 | 2089.22781010461 | ['FANCI', 'FANCM', 'FANCD2', 'FANCL', 'ERCC4', 'FANCA', 'FANCC', 'FANCE', 'FANCG', 'FANCF']                                                                                                                                                              | 9.76066382065821E-13 |
+| DNA biosynthetic process (GO:0071897)                  | 8.80583641019475E-15 | 66.1764705882353 | 2141.69305134931 | ['BLM', 'BRIP1', 'WRN', 'RAD51C', 'TERT', 'ATM', 'BRCA1', 'BRCA2', 'PALB2']                                                                                                                                                                              | 8.98723664024476E-12 |
+| strand displacement (GO:0000732)                       | 2.4590659997684E-14  | 87.1459694989107 | 2730.84180383076 | ['BLM', 'BRIP1', 'WRN', 'RAD51C', 'ATM', 'BRCA1', 'BRCA2', 'PALB2']                                                                                                                                                                                      | 2.09143563280303E-11 |
+| response to UV (GO:0009411)                            | 1.27104668599609E-12 | 29.708853238265  | 813.760558309316 | ['MSH6', 'WRN', 'MSH2', 'ERCC3', 'ERCC4', 'ERCC2', 'ERCC5', 'TP53', 'DDB2', 'MEN1']                                                                                                                                                                      | 9.26593034091148E-10 |
+| response to ionizing radiation (GO:0010212)            | 5.30877365340013E-12 | 33.9366515837104 | 881.051818701696 | ['BLM', 'RAD51C', 'MSH2', 'FANCD2', 'ERCC4', 'ATM', 'BRCA1', 'TP53', 'MEN1']                                                                                                                                                                             | 3.38633399416261E-09 |
+| DNA recombination (GO:0006310)                         | 1.45632970377016E-11 | 42.0168067226891 | 1048.4250694915  | ['BLM', 'BRIP1', 'WRN', 'RAD51C', 'ATM', 'BRCA1', 'BRCA2', 'PALB2']                                                                                                                                                                                      | 8.25738942037681E-09 |
+| negative regulation of cell proliferation (GO:0008285) | 1.72767859639958E-11 | 11.3122171945701 | 280.335490580388 | ['CEBPA', 'TSC2', 'TSC1', 'GATA2', 'APC', 'WT1', 'NF1', 'NF2', 'VHL', 'RAF1', 'TP53', 'HRAS', 'BAP1', 'MEN1']                                                                                                                                            | 8.81634387742703E-09 |
+| double-strand break repair (GO:0006302)                | 4.8363658050486E-11  | 20.7125103562552 | 491.969189125374 | ['BLM', 'BRIP1', 'WRN', 'RAD51C', 'MSH2', 'ERCC4', 'ATM', 'BRCA1', 'BRCA2', 'PALB2']                                                                                                                                                                     | 2.24363406392391E-08 |
