@@ -1,6 +1,8 @@
 # This toy dataset is composed of made-up vcf files with the data from: 
 
-Zhang J, Walsh MF, Wu G, Edmonson MN, Gruber TA, Easton J, et al. Germline Mutations in Predisposition Genes in Pediatric Cancer. N Engl J Med. 2015;373(24):2336-46.
+Zhang J, Walsh MF, Wu G, Edmonson MN, Gruber TA, Easton J, et al. Germline Mutations in Predisposition Genes in Pediatric Cancer. N Engl J Med. 2015;373(24):2336-46.  
+
+This dataset was used for benchmarking TAPES.
 
  - toy.vcf is a simple unannotated vcf file
  - toy_annovar.vcf is the same toy.vcf annotated with ANNOVAR
