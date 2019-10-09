@@ -18,6 +18,7 @@ from numpy import array_split
 from multiprocessing.pool import Pool
 import src.vep_process as vp
 import src.t_func as tf
+import src.prs
 
 parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help=False)
 
@@ -140,7 +141,13 @@ parser.add_argument("--test",
                     help="test flag - Will override all options and run a test of the sort function",
                     action='store_true',
                     required=False)
-
+parser.add_argument('--prs',
+                    help='Disease or trait to calculate Polygenic Risk Score against', type=str,
+                    required=False)
+parser.add_argument('--prs_num',
+                    help='Number of public samples to get genotype from', type=int,
+                    default=100,
+                    required=False)
 
 args = parser.parse_args()
 
@@ -151,6 +158,8 @@ if args.test == True:
     args.kegg = "Pathways in cancer"
     args.disease = "autosomal dominant"
     args.trio = "./toy_dataset/trio.txt"
+    args.prs = 'Schizophrenia'
+    args.prs_num = 10
     for item in vars(args):
         print(item, '=', getattr(args, item))
 else:
@@ -320,6 +329,11 @@ def main():
             gene_list = set(args.list.split(" "))
         tf.find_list_of_genes(final_stuff, gene_list, ref_anno)
 
+    if args.prs is not None:
+        output_folder = os.path.dirname(args.output)
+        src.prs.prs_calculation(acmg_db_path, final_stuff, args.output, args.prs, args.prs_num, output_type)
+        print(tf.tmp_stmp()+"PRS Done")
+
     ################################## OUTPUT EXTRA REPORT ################################################
     if output_type == 'csv':
         path_output = args.output.replace('.csv', '.xlsx')
@@ -441,13 +455,17 @@ if __name__ == "__main__":
         number_of_samples = tf.counting_number_of_samples(final_stuff)
         output_type = tf.output_type(args.output)  # Determine output type either directory or csv or txt/tsv
         if output_type == 'directory':
-            print('|| Please specify output type : txt or csv')
+            print('|| Please use output type : txt or csv')
 
         if args.BIG is not None:
             final_stuff = final_stuff[final_stuff['Probability_Path'] >= float(args.BIG)]
 
         if args.kegg is not None:
             tf.kegg_inverted_patway(args.kegg, final_stuff, ref_anno, acmg_db_path)
+            
+        if args.prs is not None:
+            output_folder = os.path.dirname(args.output)
+            src.prs.prs_calculation(acmg_db_path, final_stuff, args.output, args.prs, args.prs_num, output_type)
 
         if args.by_gene is True:
             tf.gene_grouped_report(final_stuff, ref_anno, acmg_db_path, number_of_samples)

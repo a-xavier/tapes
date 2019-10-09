@@ -1,0 +1,786 @@
+1,5-anhydroglucitol levels	8
+3-month functional outcome in ischaemic stroke (modified Rankin score)	54
+ACPA-positive rheumatoid arthritis (smoking interaction)	15
+AIDS	7
+AIDS progression	8
+Abdominal aortic aneurysm	16
+Acne (severe)	37
+Acute anterior uveitis (with or without ankylosing spondylitis)	14
+Acute lymphoblastic leukemia (childhood)	62
+Acute lymphoblastic leukemia in childhood (B cell precursor)	14
+Adiponectin levels	6
+Adolescent idiopathic scoliosis	28
+Adult asthma	12
+Advanced age-related macular degeneration	52
+Adverse response to chemotherapy (neutropenia/leucopenia) (all anthracycline-based drugs)	6
+Adverse response to chemotherapy (neutropenia/leucopenia) (all antimetabolite drugs)	6
+Adverse response to chemotherapy (neutropenia/leucopenia) (all antimicrotubule drugs)	12
+Adverse response to chemotherapy (neutropenia/leucopenia) (all platinum-based drugs)	6
+Adverse response to chemotherapy (neutropenia/leucopenia) (all topoisomerase inhibitors)	6
+Adverse response to chemotherapy (neutropenia/leucopenia) (carboplatin)	9
+Adverse response to chemotherapy (neutropenia/leucopenia) (cisplatin)	7
+Adverse response to chemotherapy (neutropenia/leucopenia) (docetaxel)	7
+Adverse response to chemotherapy (neutropenia/leucopenia) (paclitaxel + carboplatin)	7
+Adverse response to chemotherapy (neutropenia/leucopenia) (paclitaxel)	8
+Adverse response to chemotherapy in breast cancer (alopecia) (anti-microtubule)	7
+Adverse response to chemotherapy in breast cancer (alopecia) (cyclophosphamide+doxorubicin+/-5FU)	8
+Affective disorder and suicide attempts	7
+Age-related macular degeneration	94
+Age-related macular degeneration (choroidal neovascularisation)	6
+Age-related macular degeneration (geographic atrophy)	9
+Aging (time to event)	8
+Airflow obstruction	31
+Alanine aminotransferase (ALT) levels after remission induction therapy in actute lymphoblastic leukemia (ALL)	54
+Alcohol consumption (drinkers vs non-drinkers)	7
+Alcohol consumption (drinks per week)	6
+Alcohol dependence	55
+Alcohol dependence (age at onset)	28
+Alcohol use disorder (total score)	15
+Alcoholic chronic pancreatitis	156
+Allergic disease (asthma, hay fever or eczema)	169
+Allergic rhinitis	79
+Allergic rhinitis in non-asthmatics	7
+Allergic sensitization	31
+Allergy	25
+Alopecia areata	44
+Alzheimer's disease	146
+Alzheimer's disease (late onset)	135
+Alzheimer's disease (survival time)	7
+Alzheimer's disease in APOE e4+ carriers	17
+Alzheimer's disease in APOE e4- carriers	32
+Alzheimer's disease or family history of Alzheimer's disease	13
+Alzheimer's disease with language domain impairment	6
+Alzheimer's disease with multiple cognitive domain impairments	9
+Alzheimer's disease with no specific cognitive domain impairment	7
+Alzheimer's disease with visuospatial domain impairment	9
+Amyotrophic lateral sclerosis	86
+Amyotrophic lateral sclerosis (sporadic)	10
+Amyotrophic lateral sclerosis in C9orf72 mutation positive individuals	6
+Angiotensin-converting enzyme inhibitor intolerance	45
+Ankle injury	42
+Ankylosing spondylitis	106
+Anorexia nervosa	8
+Anthropometric traits	13
+Anti-thyroid drug induced agranulocytosis	6
+Antineutrophil cytoplasmic antibody-associated vasculitis	14
+Anxiety disorder	6
+Aortic root size	21
+Arthritis (juvenile idiopathic)	7
+Asparaginase hypersensitivity in acute lymphoblastic leukemia	9
+Asparaginase-induced acute pancreatitis in acute lymphoblastic leukemia (onset time)	11
+Asthma	275
+Asthma (adult onset)	72
+Asthma (childhood onset)	180
+Asthma (moderate or severe)	27
+Asthma (sex interaction)	6
+Asthma and hay fever	21
+Asthma exacerbations in inhaled corticosteroid treatment	16
+Asthma onset (childhood vs adult)	55
+Asthma or allergic disease (pleiotropy)	38
+Atopic dermatitis	73
+Atopic march	7
+Atrial fibrillation	457
+Attention deficit hyperactivity disorder	40
+Attention deficit hyperactivity disorder or cannabis use	16
+Atypical femoral fracture in phosphonate treatment	14
+Autism	13
+Autism spectrum disorder	54
+Autism spectrum disorder or schizophrenia	300
+Autism spectrum disorder, attention deficit-hyperactivity disorder, bipolar disorder, major depressive disorder, and schizophrenia (combined)	60
+Autism spectrum disorder-related traits	6
+Autoimmune thyroid diseases (Graves disease or Hashimoto's thyroiditis)	11
+BMI (adjusted for smoking behaviour)	143
+BMI in non-smokers	104
+BMI in smokers	30
+BRCA1/2-negative high-risk breast cancer	19
+Bacteremia	12
+Barrett's esophagus	14
+Barrett's esophagus  or Esophageal adenocarcinoma	14
+Basal cell carcinoma	65
+Behcet's disease	20
+Benign prostatic hyperplasia and lower urinary tract symptoms	23
+Benign prostatic hyperplasia and lower urinary tract symptoms (prostate cancer excluded)	22
+Biliary atresia	6
+Bilirubin levels	30
+Binge eating behaviour and bipolar disorder	7
+Binge eating behaviour in bipolar disorder	6
+Biochemical measures	17
+Biomedical quantitative traits	6
+Bipolar I disorder	63
+Bipolar disorder	319
+Bipolar disorder and eating disorder	10
+Bipolar disorder and schizophrenia	116
+Bipolar disorder with mood-incongruent psychosis	16
+Birth weight	12
+Bisphosphonate-associated atypical femoral fracture	37
+Bladder cancer	32
+Blond vs non-blond hair color	6
+Blond vs. brown/black hair color	212
+Blood pressure	93
+Blood pressure measurement (cold pressor test)	7
+Blood pressure measurement (high sodium and potassium intervention)	13
+Blood pressure measurement (high sodium intervention)	11
+Blood pressure measurement (low sodium intervention)	10
+Body fat percentage	52
+Body mass index	1270
+Body mass index in physically active individuals	193
+Bone mineral density	9
+Bone mineral density (femoral neck)	6
+Bone mineral density (hip)	30
+Bone mineral density (spine)	37
+Borderline personality disorder	28
+Brain volume in infants (grey matter)	12
+Brain volume in infants (white matter)	6
+Breast Cancer in BRCA1 mutation carriers	15
+Breast cancer	543
+Breast cancer (early onset)	18
+Breast cancer (estrogen-receptor negative)	73
+Breast cancer (survival)	9
+Breast cancer and/or colorectal cancer	18
+Breast cancer in BRCA2 mutation carriers	6
+Breast cancer specific mortality in breast cancer	47
+Breast cancer specific mortality in estrogen receptor negative breast cancer	28
+Breast cancer specific mortality in estrogen receptor positive breast cancer	22
+Breast size	38
+Bronchopulmonary dysplasia	26
+Bronchopulmonary dysplasia in preterm infants	12
+Brown vs. black hair color	55
+Brown vs. non-brown hair color	8
+C-reactive protein	14
+C-reactive protein and white blood cell count	9
+Caffeine consumption	10
+Caffeine metabolism (plasma 1,3,7-trimethylxanthine (caffeine) level)	11
+Caffeine metabolism (plasma 1,7-dimethylxanthine (paraxanthine) to 1,3,7-trimethylxanthine (caffeine) ratio)	31
+Calcium levels	6
+Cancer	43
+Candidemia	8
+Cannabis dependence	10
+Carbamazepine-induced hyponatremia in epilepsy	7
+Cardiac Troponin-T levels	18
+Cardiovascular disease risk factors	20
+Carpal tunnel syndrome	16
+Celiac disease	99
+Cervical cancer	38
+Childhood ear infection	38
+Chin dimples	46
+Cholesterol, total	131
+Chronic bronchitis and chronic obstructive pulmonary disease	11
+Chronic central serous retinopathy	9
+Chronic hepatitis B infection	23
+Chronic kidney disease	65
+Chronic lymphocytic leukemia	126
+Chronic obstructive pulmonary disease	174
+Chronotype	351
+Circulating vasoactive peptide levels	7
+Cisplatin-induced ototoxicity	20
+Classic bladder exstrophy	25
+Cleft lip with or without cleft palate	32
+Cleft lip with or without cleft palate (maternal periconceptional vitamin use interaction)	8
+Cleft palate	65
+Clozapine-induced agranulocytosis	28
+Clozapine-induced agranulocytosis/granulocytopenia in treatment-resistant schizophrenia	12
+Coagulation factor levels	6
+Coffee consumption	7
+Cognitive ability	69
+Cognitive ability (MTAG)	82
+Colonoscopy-negative controls vs population controls	130
+Colorectal adenoma (advanced)	30
+Colorectal cancer	463
+Colorectal cancer (SNP x SNP interaction)	7
+Colorectal cancer (diet interaction)	13
+Colorectal cancer or advanced adenoma	121
+Colorectal or endometrial cancer	29
+Complement C3 and C4 levels	10
+Conduct disorder	12
+Congenital heart disease (inherited effect)	10
+Congenital heart disease (maternal effect)	20
+Conotruncal heart defects	11
+Conotruncal heart defects (inherited effects)	10
+Conotruncal heart defects (maternal effects)	22
+Corneal astigmatism	63
+Corneal curvature	10
+Coronary artery aneurysm in Kawasaki disease	22
+Coronary artery disease	106
+Coronary artery disease (myocardial infarction, percutaneous transluminal coronary angioplasty, coronary artery bypass grafting, angina or chromic ischemic heart disease)	72
+Coronary artery disease in type 1 diabetes	21
+Coronary atherosclerosis (increased number of diseased vessels) (traffic exposure interaction)	8
+Coronary heart disease	89
+Corticobasal degeneration	8
+Cough in response to angiotensin-converting enzyme inhibitor drugs	33
+Craniofacial microsomia	13
+Creatinine levels	9
+Crohn's disease	385
+Crohn's disease-related phenotypes	7
+Cutaneous lupus erythematosus	7
+Cutaneous psoriasis	10
+Cutaneous squamous cell carcinoma	12
+D-dimer levels	15
+Daytime nap	7
+Deep ovarian and/or rectovaginal disease with dense adhesions	10
+Dehydroepiandrosterone sulphate levels	8
+Delirium	27
+Dementia with Lewy bodies	6
+Depression	239
+Depression and alcohol dependence	8
+Diabetic kidney disease	58
+Diabetic kidney disease in type 2 diabetes	9
+Diabetic kidney disease in type 2 diabetes (ESRD vs. no ESRD)	14
+Diabetic retinopathy	20
+Diabetic retinopathy (all NPDR and PDR)	19
+Diabetic retinopathy (moderate NPDR and PDR)	17
+Dialysis-related mortality	26
+Diastolic blood pressure	422
+Diastolic blood pressure response to hydrochlorothiazide in hypertension	8
+Dietary macronutrient intake	15
+Differentiated thyroid cancer	9
+Diffuse large B cell lymphoma	8
+Digestive system disease (Barrett's esophagus and esophageal adenocarcinoma combined)	10
+Diisocyanate-induced asthma	179
+Disease progression in age-related macular degeneration	62
+Docetaxel-induced peripheral neuropathy in metastatic castrate-resistant prostate cancer	12
+Drug-induced Stevens-Johnson syndrome or toxic epidermal necrolysis (SJS/TEN)	10
+Drug-induced liver injury	6
+Drug-induced liver injury (flucloxacillin)	17
+Dupuytren's disease	41
+Dysphagia	19
+EGFR mutation-positive lung adenocarcinoma	6
+Early onset atrial fibrillation	6
+Early-onset Parkinson's disease	13
+Eating disorders	6
+Educational attainment	7
+Educational attainment (college completion)	34
+Educational attainment (years of education)	10
+Electrocardiographic conduction measures	8
+Electrocardiographic traits	21
+Electroencephalogram traits	8
+Emotional lability in attention deficit hyperactivity disorder	8
+Emphysema-related traits	7
+End-stage renal disease	7
+Endometrial cancer	42
+Endometrial cancer (Non-endometrioid histology)	7
+Endometrial cancer (endometrioid histology)	32
+Endometrial endometrioid carcinoma	7
+Endometriosis	106
+Endometriosis or endometrial cancer (pleiotropy)	8
+Energy expenditure	11
+Energy expenditure (24h)	9
+Eosinophilic esophagitis	23
+Eosinophilic esophagitis (pediatric)	14
+Epilepsy	10
+Epilepsy (remission after treatment)	7
+Epilepsy and lamotrigine-induced maculopapular eruptions	27
+Epithelial ovarian cancer	175
+Erectile dysfunction and prostate cancer treatment	23
+Erosive tooth wear (severe vs non-severe)	45
+Esophageal adenocarcinoma	13
+Esophageal cancer	13
+Esophageal cancer (squamous cell)	7
+Esophageal squamous cell carcinoma	10
+Essential tremor	14
+Estimated glomerular filtration rate	258
+Eudaimonic well-being	21
+Ewing sarcoma	7
+Experiencing mood swings	69
+Extremely high intelligence	26
+Exudative age-related macular degeneration	7
+Facial wrinkles	19
+Familial lung adenocarcinoma	36
+Familial lung cancer	20
+Familial squamous cell lung carcinoma	68
+Family history of Alzheimer's disease	36
+Fasting blood glucose	15
+Fasting plasma glucose	25
+Febrile seizures	7
+Febrile seizures (MMR vaccine-related)	10
+Feeling fed-up	60
+Feeling guilty	29
+Feeling hurt	46
+Feeling lonely	10
+Feeling miserable	64
+Feeling nervous	67
+Feeling tense	33
+Fibrinogen	15
+Follicular lymphoma	14
+Food addiction	6
+Fractures	22
+Freckles	11
+Frontal fibrosing alopecia	37
+Frontotemporal dementia	18
+Frontotemporal dementia with GRN mutation	12
+Fuchs's corneal dystrophy	8
+Fulminant type 1 diabetes	9
+Gait speed in old age	19
+Gallbladder cancer	7
+Gallstone disease	38
+Gamma glutamyl transpeptidase	7
+Gastric adenocarcinoma (histologically verified)	7
+Gastric cancer	20
+Gastritis	7
+Gemcitabine-induced early high-grade neutropenia in pancreatic cancer	6
+General cognitive ability	1248
+Generalized epilepsy	10
+Giant cell arteritis	8
+Glaucoma	61
+Glaucoma (primary angle closure)	22
+Glaucoma (primary open-angle)	100
+Glioblastoma	35
+Glioblastoma (age-stratified)	20
+Glioma	68
+Glioma (high-grade)	6
+Glomerular filtration rate in diabetes	7
+Glycated hemoglobin levels	19
+Glycemic traits	11
+Gout	27
+Graves' disease	36
+Gut microbiota (bacterial taxa)	16
+Gut microbiota (beta diversity)	15
+Gut microbiota (functional units)	56
+HDL cholesterol	334
+HIV-1 control	10
+HIV-1 susceptibility	6
+Hand grip strength	23
+Heart failure	16
+Heart rate	7
+Heart rate response to beta blockers (atenolol add-on therapy)	33
+Heart rate response to beta blockers (atenolol monotherapy)	29
+Heart rate response to exercise	32
+Heart rate response to recovery post exercise	27
+Height	302
+Hematocrit	16
+Hematological parameters	12
+Hematology traits	6
+Hemoglobin	11
+Hemoglobin levels	11
+Hemostatic factors and hematological phenotypes	7
+Hepatitis	9
+Hepatitis B	10
+Hepatitis C (spontaneous viral clearance)	7
+Hepatocellular carcinoma	9
+Hepatocellular carcinoma in hepatitis B infection	11
+Hepcidin levels	8
+Heroin dependence	8
+High-grade serous ovarian cancer	21
+Hippocampal tail volume	7
+Hippocampal tail volume (corrected for total hippocampal volume)	7
+Hippocampal volume	13
+Hirschsprung disease	17
+Hodgkin's lymphoma	34
+Hypersomnia (HLA-DQB1*06:02 negative)	6
+Hypertension	39
+Hypertriglyceridemia	24
+Hypospadias	25
+Hypothyroidism	45
+Idiopathic dilated cardiomyopathy	44
+Idiopathic inflammatory myopathy	7
+Idiopathic membranous nephropathy	21
+Idiopathic osteonecrosis of the femoral head	6
+Idiopathic pulmonary fibrosis	14
+IgA nephropathy	64
+IgE grass sensitization	9
+Immunoglobulin A	12
+Immunoglobulin A vasculitis	7
+Immunoglobulin light chain (AL) amyloidosis	10
+Infantile hypertrophic pyloric stenosis	22
+Inflammatory bowel disease	295
+Inflammatory skin disease	15
+Influenza A (H1N1) infection	10
+Insomnia	397
+Insomnia (caffeine-induced)	9
+Insomnia symptoms (never/rarely vs. sometimes/usually)	49
+Insomnia symptoms (never/rarely vs. usually)	55
+Insulin resistance/response	14
+Intelligence	560
+Interferon alpha levels in systemic lupus erythematosus	8
+Interstitial lung disease	18
+Intracranial aneurysm	79
+Intracranial volume	9
+Intraocular pressure	49
+Invasive epithelial ovarian cancer	19
+Iron status biomarkers	20
+Irritable bowel syndrome	11
+Irritable mood	67
+Ischemic stroke	27
+Ischemic stroke (cardioembolic)	9
+Ischemic stroke (large artery atherosclerosis)	7
+JT interval (sulfonylurea treatment interaction)	14
+Juvenile idiopathic arthritis (oligoarticular or rheumatoid factor-negative polyarticular)	31
+Kawasaki disease	20
+Knee osteoarthritis	35
+LDL cholesterol	253
+Large artery stroke	22
+Laryngeal squamous cell carcinoma	6
+Late-onset myasthenia gravis	19
+Latent naming speed	7
+Lateral ventricular volume in normal aging	7
+Left ventricular obstructive tract defect (inherited effect)	15
+Left ventricular obstructive tract defect (maternal effect)	9
+Leprosy	40
+Light vs. dark hair color	8
+Lipid traits	18
+Lipoprotein (a) levels	44
+Lipoprotein phospholipase A2 activity in cardiovascular disease	16
+Lipoprotein-associated phospholipase A2 activity and mass	14
+Lipoprotein-associated phospholipase A2 activity change in response to statin therapy	7
+Liver enzyme levels	11
+Liver enzyme levels (alkaline phosphatase)	14
+Liver enzyme levels (gamma-glutamyl transferase)	26
+Longevity	32
+Longevity (90 years and older)	10
+Longitudinal alcohol consumption	6
+Low high density lipoprotein cholesterol levels	11
+Low white blood cell count (conditioned on rs2814778)	16
+Low-grade serous and serous borderline ovarian cancer	12
+Lower body strength	11
+Lung adenocarcinoma	92
+Lung cancer	182
+Lung cancer in ever smokers	112
+Lung cancer in never smokers	23
+Lung function (FEV1)	23
+Lung function (FVC)	32
+Lung function (forced vital capacity)	7
+Lupus nephritis in systemic lupus erythematosus	17
+Lymphoma	13
+Magnesium levels	28
+Major depressive disorder	77
+Major depressive disorder (broad)	9
+Malaria	13
+Male-pattern baldness	57
+Maternal history of Alzheimer's disease	6
+Mean arterial pressure	13
+Mean corpuscular hemoglobin	18
+Mean corpuscular hemoglobin concentration	10
+Mean corpuscular volume	19
+Mean platelet volume	51
+Meconium ileus in cystic fibrosis	7
+Melanoma	54
+Memory dysfunction in frontotemporal lobe dementia	6
+Menarche (age at onset)	82
+Menarche and menopause (age at onset)	6
+Menopause (age at onset)	120
+Metabolic syndrome	33
+Metabolic traits	11
+Metabolite levels	18
+Metastasis in stage I-III microsatellite instability low/stable colorectal cancer (time to event)	26
+Migraine	144
+Migraine - clinic-based	37
+Migraine with aura	23
+Migraine without aura	41
+Mild influenza (H1N1) infection	18
+Mitral valve prolapse	8
+Moderate or severe diarrhoea in darapladib-treated cardiovascular disease (time to event)	7
+Modic changes	10
+Monoclonal gammopathy of undetermined significance	25
+Morning person	213
+Morning vs. evening chronotype	40
+Mortality in heart failure	13
+Mortality in sepsis	15
+Mouth ulcers	94
+Moyamoya disease	36
+Mucinous adenocarcinoma in colorectal cancer	17
+Mucinous ovarian carcinoma	13
+Multiple cancers (lung cancer, gastric cancer, and squamous cell carcinoma)	7
+Multiple keratinocyte cancers	17
+Multiple myeloma	43
+Multiple myeloma (IgH translocation)	25
+Multiple myeloma (hyperdiploidy)	14
+Multiple sclerosis	310
+Multiple sclerosis (OCB status)	12
+Multiple system atrophy	22
+Multiple system atrophy (pathologically confirmed)	16
+Myasthenia gravis	9
+Myocardial infarction	53
+Myocardial infarction (early onset)	9
+Myopia	50
+Myopia (pathological)	15
+Myositis	23
+N-glycan levels	41
+Narcolepsy	17
+Nasal polyps	18
+Nasopharyngeal carcinoma	31
+Nephropathy	6
+Neuroblastoma	10
+Neurociticism	181
+Neurocognitive impairment in HIV-1 infection (dichotomous)	9
+Neuromyelitis optica	7
+Neuromyelitis optica (AQP4-IgG-positive)	7
+Neuroticism	523
+Nodular sclerosis Hodgkin lymphoma	11
+Non-cardia gastric cancer	8
+Non-glioblastoma glioma	41
+Non-melanoma skin cancer	82
+Non-response to bupropion and depression	6
+Non-small cell lung cancer (survival)	6
+Nonalcoholic fatty liver disease	14
+Nonsyndromic cleft lip with cleft palate	56
+Nonsyndromic cleft lip with or without cleft palate	6
+Obese vs. thin	14
+Obesity	81
+Obesity (early onset extreme)	24
+Obesity (extreme)	26
+Obesity without metabolic disease	13
+Obesity-related traits	893
+Obstetric antiphospholipid syndrome	15
+Oral cavity and pharyngeal cancer	10
+Oral cavity cancer	9
+Orofacial clefts	63
+Oropharynx cancer	17
+Ossification of the posterior longitudinal ligament of the spine	8
+Osteoarthritis	43
+Osteoarthritis (hip)	67
+Osteoarthritis (hospital diagnosed)	6
+Osteoarthritis (self-reported)	29
+Osteoarthritis of the hip (with total joint replacement)	6
+Osteoarthritis of the hip or knee	32
+Osteoarthritis of the hip or knee (hospital diagnosed)	8
+Osteoarthritis of the knee (hospital diagnosed)	7
+Osteoporosis-related phenotypes	6
+Osteosarcoma	6
+Ovarian cancer	56
+Ovarian cancer in BRCA1 mutation carriers	9
+Overall survival in osteosarcoma	9
+Overall survival in serous epithelial ovarian cancer treated with paclitaxel and cisplatin	10
+P wave duration	20
+P wave terminal force	12
+PEG-asparaginase hypersensitivity without enzyme activity in childhood acute lymphoblastic leukaemia	11
+PR interval	71
+Paclitaxel-induced neuropathy	10
+Paget's disease	13
+Pancreatic cancer	101
+Pancreatic ductal adenocarcinoma	9
+Papillary thyroid cancer	9
+Parkinson disease and lewy body pathology	10
+Parkinson's disease	220
+Peak insulin response	9
+Pelvic organ prolapse	25
+Pelvic organ prolapse (moderate/severe)	33
+Pemphigus vulgaris	11
+Pericardial adipose tissue adjusted for height and weight	7
+Periodontal disease-related phenotypes	10
+Periodontal microbiota	16
+Periodontitis	18
+Periodontitis (CDC/AAP)	28
+Periodontitis (PAL4Q3)	18
+Perioperative myocardial infarction in coronary artery bypass surgery	14
+Peripheral arterial disease (traffic-related air pollution interaction)	154
+Peripheral artery disease	9
+Phospholipid levels (plasma)	17
+Photic sneeze reflex	55
+Placental abruption	9
+Plasma omega-3 polyunsaturated fatty acid level (eicosapentaenoic acid)	17
+Plasma omega-3 polyunsaturated fatty acid levels (alphalinolenic acid)	10
+Plasma omega-3 polyunsaturated fatty acid levels (docosapentaenoic acid)	20
+Plasma trimethylamine N-oxide levels	8
+Platelet count	66
+Pneumococcal bacteremia	9
+Polycystic ovary syndrome	35
+Polymyositis	8
+Post-traumatic stress disorder	16
+Posterior cortical atrophy and Alzheimer's disease	18
+Pre-treatment pain in head and neck squamous cell carcinoma	9
+Preeclampsia	18
+Premature menopause in childhood cancer survivors	8
+Presence of antiphospholipid antibodies	19
+Prevalent atrial fibrillation	9
+Primary biliary cholangitis	105
+Primary biliary cirrhosis	47
+Primary central nervous system lymphoma	7
+Primary sclerosing cholangitis	49
+Prion diseases	11
+Progressive supranuclear palsy	16
+Proliferative diabetic retinopathy (vs NPDR and no DR)	18
+Proliferative diabetic retinopathy (vs no DR)	12
+Prostate cancer	420
+Prostate cancer (SNP x SNP interaction)	51
+Prostate cancer (advanced)	18
+Prostate cancer (early onset)	20
+Protein C levels	15
+Proteinuria and chronic kidney disease	9
+Psoriasis	335
+Psoriasis vulgaris	41
+Psoriatic arthritis	57
+Psychological distress	23
+Psychosis and Alzheimer's disease	11
+Psychosis in Alzheimer's disease	8
+Pulmonary function	16
+Pulse pressure	403
+Putamen volume	10
+Pyoderma gangrenosum in inflammatory bowel disease	7
+QRS duration	132
+QRS interval (sulfonylurea treatment interaction)	18
+QT interval	97
+QT interval (sulfonylurea treatment interaction)	12
+Quantitative traits	33
+Reading disability or specific language impairment (pleiotropy)	8
+Red blood cell traits	20
+Red vs. brown/black hair color	40
+Refractive astigmatism	61
+Renal cell carcinoma	37
+Renal function-related traits (BUN)	15
+Renal function-related traits (eGRFcrea)	10
+Renal function-related traits (sCR)	9
+Renal underexcretion gout	8
+Residual cognition	9
+Resistance to antihypertensive treatment in hypertension	6
+Resistant hypertension	7
+Response to SSRI (symptom remission)	8
+Response to abacavir-containing treatment in HIV-1 infection (virologic failure)	27
+Response to anti-retroviral therapy (ddI/d4T) in HIV-1 infection (Grade 1 peripheral neuropathy)	11
+Response to anti-retroviral therapy (ddI/d4T) in HIV-1 infection (Grade 2 peripheral neuropathy)	13
+Response to anti-retroviral therapy (ddI/d4T) in HIV-1 infection (Grade 3 peripheral neuropathy)	9
+Response to antidepressants (symptom remission)	11
+Response to antineoplastic agents	9
+Response to antipsychotic treatment	10
+Response to chemotherapy in breast cancer hypertensive cases (cumulative dose) (bevacizumab)	13
+Response to citalopram or escitalopram in depression	7
+Response to citalopram treatment	7
+Response to efavirenz-containing treatment in HIV 1 infection (virologic failure)	35
+Response to fenofibrate (adiponectin levels)	12
+Response to hepatitis C treatment	17
+Response to irinotecan and platinum-based chemotherapy in non-small-cell lung cancer	7
+Response to lurasidone in schizophrenia	13
+Response to platinum-based chemotherapy in non-small-cell lung cancer	6
+Response to radiotherapy in prostate cancer (toxicity, decreased urine stream)	8
+Response to radiotherapy in prostate cancer (toxicity, rectal bleeding)	6
+Response to radiotherapy in prostate cancer (toxicity, urinary frequency)	11
+Response to selective serotonin reuptake inhibitors in depression	8
+Response to serotonin reuptake inhibitors in major depressive disorder	10
+Response to statins (LDL cholesterol change)	8
+Response to treatment for acute lymphoblastic leukemia	12
+Resting heart rate	18
+Resting metabolic rate	10
+Restless legs syndrome	32
+Rheumatoid arthritis	327
+Rheumatoid arthritis (ACPA-negative)	8
+Rheumatoid arthritis (ACPA-positive)	94
+Sarcoidosis	10
+Schizoaffective disorder-bipolar type	10
+Schizophrenia	1690
+Selective IgA deficiency	33
+Self-reported risk-taking behaviour	26
+Sense of smell	22
+Serous borderline ovarian cancer	10
+Serous invasive ovarian cancer	21
+Serum 25-Hydroxyvitamin D levels	14
+Serum bilirubin levels in metabolic syndrome	23
+Serum prostate-specific antigen levels	6
+Serum urate levels in chronic kidney disease	7
+Serum urea levels	6
+Serum uric acid levels	12
+Severe influenza A (H1N1) infection	16
+Severe malaria	16
+Severe skin toxicity response to cetuximab in colorectal cancer	8
+Sex hormone-binding globulin levels	25
+Shingles	17
+Sjögren's syndrome	52
+Sleep duration	9
+Sleep duration (long sleep)	8
+Sleep duration (short sleep)	27
+Small cell lung carcinoma	50
+Small vessel stroke	9
+Smoking behavior	31
+Smoking cessation in chronic obstructive pulmonary disease	8
+Snoring	42
+Soluble ICAM-1	7
+Spherical equivalent or myopia (age of diagnosis)	140
+Sporadic neuroblastoma	9
+Squamous cell carcinoma	18
+Squamous cell lung carcinoma	101
+Staphylococcus aureus infection	6
+Staphylococcus aureus nasal carriage (intermittent)	7
+Strenuous sports or other exercises	8
+Stroke	31
+Stroke (ischemic)	10
+Subcortical brain region volumes	8
+Sudden cardiac arrest	52
+Suffering from nerves	12
+Suicidal ideation	29
+Suicide attempts	32
+Suicide attempts in bipolar disorder	17
+Suicide attempts in bipolar disorder or schizophrenia	18
+Suicide attempts in major depressive disorder	21
+Suicide attempts in major depressive disorder or bipolar disorder or schizophrenia	40
+Suicide attempts in schizophrenia	20
+Sulfasalazine-induced agranulocytosis	32
+Supraventricular ectopy	6
+Survival in colon cancer	12
+Survival in microsatellite instability low/stable colorectal cancer	12
+Survival in pancreatic cancer	61
+Survival in rectal cancer	18
+Systemic juvenile idiopathic arthritis	25
+Systemic lupus erythematosus	658
+Systemic lupus erythematosus and Systemic sclerosis	20
+Systemic lupus erythematosus or rheumatoid arthritis	9
+Systemic sclerosis	52
+Systemic seropositive rheumatic diseases (Systemic sclerosis or systemic lupus erythematosus or rheumatoid arthritis or idiopathic inflammatory myopathies)	26
+Systolic blood pressure	680
+Systolic blood pressure in sickle cell anemia	10
+Systolic blood pressure response to hydrochlorothiazide in hypertension	10
+Takayasu arteritis	69
+Tanning	10
+Temporomandibular joint disorder	7
+Testicular germ cell cancer	6
+Testicular germ cell tumor	126
+Tetralogy of Fallot	6
+Thiazide-induced adverse metabolic effects in hypertensive patients	59
+Thionamide-induced agranulocytosis in Graves' disease	9
+Thrombosis	12
+Thyroid cancer	22
+Thyroid peroxidase antibody positivity	11
+Tinnitus in cisplatin-treated testicular cancer	10
+Tonsillectomy	75
+Total cholesterol levels	140
+Total hippocampal volume	8
+Tourette syndrome	31
+Tourette's syndrome or obsessive-compulsive disorder	15
+Treatment resistant depression	15
+Triglyceride levels	15
+Triglycerides	306
+Triiodothyronine levels	6
+Tuberculosis	63
+Tumor biomarkers	11
+Type 1 diabetes	143
+Type 1 diabetes and autoimmune thyroid diseases	11
+Type 1 diabetes autoantibodies in high risk HLA genotype individuals (time to event)	9
+Type 1 diabetes nephropathy	11
+Type 2 diabetes	893
+Type 2 diabetes (adjusted for BMI)	70
+Type 2 diabetes and end-stage kidney disease	25
+Type 2 diabetes and end-stage kidney disease in APOL1 risk genotype negative individuals	13
+Type 2 diabetes nephropathy	12
+Type 2 diabetes nephropathy including microalbuminuria	6
+Ulcerative colitis	280
+Urate levels	66
+Urate levels in lean individuals	36
+Urate levels in obese individuals	35
+Urate levels in overweight individuals	43
+Urgency urinary incontinence	6
+Uric acid levels	24
+Urinary bladder cancer	7
+Urolithiasis	17
+Uterine fibroid number (single vs multiple)	8
+Uterine fibroids	62
+Venous thromboembolism	42
+Venous thromboembolism (SNP x SNP interaction)	37
+Venous thromboembolism adjusted for sickle cell variant rs77121243-T	86
+Vertical cup-disc ratio	9
+Very long-chain saturated fatty acid levels (fatty acid 20:0)	21
+Very long-chain saturated fatty acid levels (fatty acid 22:0)	11
+Vigorous physical activity	8
+Vitamin B12 levels	10
+Vitamin D levels	16
+Vitiligo	89
+Waist circumference	10
+Waist circumference adjusted for BMI in active individuals	235
+Waist circumference adjusted for BMI in inactive individuals	14
+Waist circumference adjusted for body mass index	260
+Warfarin maintenance dose	20
+Wegener's granulomatosis	6
+Weight	35
+White matter hyperintensities in ischemic stroke	8
+White matter lesion progression	7
+White matter lesion progression (adjusted for white matter lesion burden at baseline)	6
+Wilms tumor	7
+Worry too long after an embarrassing experience	34
+Yu-Zhi constitution type in type 2 diabetes	11
+middle facial morphology traits (quantitative measurement)	6
+vWF and FVIII levels	11
