@@ -65,11 +65,50 @@ TAPES can predict the pathogenicity of variants (using [ANNOVAR](https://github.
   - ~~Support for VEP annotated vcf and BS2 criteria assignment optimisation~~ Done
 - ~~Add ```--by_gene``` report to files with only one sample.~~ Done
 - ~~Better enrichement calculation for PS4 criteria assignment~~ Done  
+- ~~Polygenic Risk Score calculation without controls~~ Done 
 - Output VCF files
 - Analysing InterVar output files
 - Using real control samples for OR calculation/PS4
 - Docker image creation
-- Polygenic Risk Score calculation without controls
-   
+
+### New Polygenic Risk Score (PRS) Module  
+
+TAPES can now use a multi-sample vcf file to calculate a Polygenic Risk Score for a specific disease/trait.  
+PRS can detect an elevated risk for a specific disease using common variants that add a very small but significant risk.
+
+For now only cumulative PRS is calculated as follow
+
+PRS=  sum { βi * SNPi }
+
+Where βi is the beta-value associated with the SNPi and SNPi is the genotype at this locus (1 for heterozygous and 2 for homozygous)
+
+PRS can help determine if the studied cohort is more at risk of a certain disease (vs n "healthy" controls from 1000genomephase3).
+
+Samples are compared to public genotyped individuals from [ENSEMBL REST API](https://rest.ensembl.org/documentation/info/variation_id). Odds Ratios and Beta values for each disease/trait was obtained through [GWAS Catalog](https://www.ebi.ac.uk/gwas/). 
+
+__CAVEATS__
+- p-values from GWAS catalog are all under 9x10-6.  
+- Linkage Desiquilibrium is __not__ adjusted so proceed with caution with your results (some SNPs might not be independants).  
+- SNPs that are heavily linked to ethnicity are excluded (using a list from [Huang et al. 2015](https://www.ncbi.nlm.nih.gov/pubmed/26690364)  
+- This function will work best with whole-exomes rather than targeted.
+- If the is a very small number of SNP (n<20) overlapping between your cohort and the SNPs in GWAS catalog, the results will most likely be very inacurrate.
+- As always, the more samples you use, the more precise this function will be.
+
+__USAGE__ 
+
+With a multi-sample annotated file, try:  
+```python3 tapes.py sort -i ./annotated_multi_sample.vcf -o ./output_folder/ --prs "Crohn's disease" --prs_num 200```
+
+__OUTPUT__
+
+It will output:  
+
+- A table with the genotype of your samples along with the control samples for the specified SNPs as well as informations on the SNPs (beta value, gene, frequency, etc). In addition, means from cases and controls are compared using a non-parametric test.
+
+- A histogram showing ranked (from lowest to biggest) PRS. Blue bars are healthy public controls and red bars are the sample from the cohort studied. 
+
+
+![PRS_picture](https://raw.githubusercontent.com/a-xavier/tapes/testing/acmg_db/PRS_CD.png)
+
   
   
