@@ -3490,6 +3490,10 @@ python tapes.py {red}db{end} -b -A /path/to/annovar  | Download annovar database
 --bp1_percent         Threshold for BP1, considering BP1 positive if variant
                       is missense in a gene where less than the threshold
                       are pathogenic missense
+--prs                 Disease or trait to calculate Polygenic Risk Score against
+
+--prs_num             Number of public samples to get genotype from
+					  Default = 100
     """.format(blue=bcolors.OKBLUE,
                green=bcolors.OKGREEN,
                red=bcolors.FAIL,
@@ -3608,6 +3612,11 @@ python tapes.py {red}db{end} -b -A /path/to/annovar  | Download annovar database
         --bp1_percent         Threshold for BP1, considering BP1 positive if variant
                               is missense in a gene where less than the threshold
                               are pathogenic missense
+                              
+        --prs                 Disease or trait to calculate Polygenic Risk Score against
+        
+        --prs_num             Number of public samples to get genotype from
+                              Default = 100
             """
     return message
 
