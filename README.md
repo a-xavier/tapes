@@ -6,9 +6,12 @@ Please refer to the [WIKI](https://github.com/a-xavier/tapes/wiki) for more info
 See [HERE for installation and dependencies resolutions](https://github.com/a-xavier/tapes/wiki/Installation-and-Dependencies).
 
 ## TAPES purpose
-TAPES is a tools written in __python3__ designed to __predict pathogenicity__ of variants in __exome studies__.
+TAPES is an open-source tool written in __python3__ designed to __predict pathogenicity__ of variants in __exome studies__.
 It is especially designed for small scalle exome studies (from dozens to a few hundreds) sharing a common trait/phenotype.
 TAPES can also handle __trio data__ with healthy parents and __calculate variant enrichment__ compared to the general population wwithout the use of controls. 
+
+## CONTRIBUTING
+Have an awesome idea, correction, feedback for TAPES? Want to contribute, please add an entry in the [Issues](https://github.com/a-xavier/tapes/issues) or a [Pull Request](https://github.com/a-xavier/tapes/pulls).
 
 ## TAPES WORKFLOW 
 
@@ -71,5 +74,10 @@ TAPES can predict the pathogenicity of variants (using [ANNOVAR](https://github.
 - Docker image creation
 - Polygenic Risk Score calculation without controls
    
+### Reference
+   
+If you use TAPES, please cite the [reference paper](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007453):  
+   
+Xavier A, Scott RJ, Talseth-Palmer BA (2019) TAPES: A tool for assessment and prioritisation in exome studies. PLOS Computational Biology 15(10): e1007453. https://doi.org/10.1371/journal.pcbi.1007453
   
   
