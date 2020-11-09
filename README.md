@@ -5,6 +5,15 @@
 Please refer to the [WIKI](https://github.com/a-xavier/tapes/wiki) for more information on all TAPES functions.  
 See [HERE for installation and dependencies resolutions](https://github.com/a-xavier/tapes/wiki/Installation-and-Dependencies).
 
+## Warning  
+The command ```perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar avdblist ./``` does not seem to download the list of databases available for ANNOVAR anymore (this might be temporary).
+If this happens, please download:  
+[https://github.com/a-xavier/tapes/files/5507866/hg19_avdblist.txt](https://github.com/a-xavier/tapes/files/5507866/hg19_avdblist.txt)  
+and  
+[https://github.com/a-xavier/tapes/files/5507867/hg38_avdblist.txt](https://github.com/a-xavier/tapes/files/5507867/hg38_avdblist.txt)  
+and place them in your ANNOVAR folder (where ```annotate_variation.pl``` is located).
+
+
 ## TAPES purpose
 TAPES is an open-source tool written in __python3__ designed to __predict pathogenicity__ of variants in __exome studies__.
 It is especially designed for small scalle exome studies (from dozens to a few hundreds) sharing a common trait/phenotype.
