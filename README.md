@@ -1,5 +1,5 @@
 
-# TAPES
+# TAPES ![BuildUpdates](https://www.travis-ci.com/a-xavier/tapes.svg?branch=master)
  
 **TAPES** : a Tool for Assessment and Prioritisation in Exome Studies  
 
