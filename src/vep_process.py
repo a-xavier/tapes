@@ -40,7 +40,7 @@ def vep_process_vcf(vcf_path, acmg_db_path):
     df = pd.concat(tp, ignore_index=True)
     # df = pd.read_csv(vcf_path, sep='\t', header=head_line)
     df.rename(columns={'#CHROM': 'CHROM'}, inplace=True)
-    df['CHROM'] = df['CHROM'].str.replace('chr', '')
+    #df['CHROM'] = df['CHROM'].str.replace('chr', '')
 
     try:
         csq_list = csq_line.split('Format: ')[1].split('|')
@@ -125,6 +125,10 @@ def vep_process_vcf(vcf_path, acmg_db_path):
             prec_list.append('.')
             pnull_list.append('.')
 
+    ref_anno = 'refGene'
+
+    '''
+
     if str(info_df['Feature'][0]).startswith('ENST'):
         ref_anno = 'ensGene'
     elif str(info_df['Feature'][0]).startswith('NM_'):
@@ -134,6 +138,8 @@ def vep_process_vcf(vcf_path, acmg_db_path):
     else:
         print('|| Cannot determine reference annotation used...')
         sys.exit(1)
+
+    '''
 
     info_df['pLi'] = pli_list
     info_df['pRec'] = prec_list
