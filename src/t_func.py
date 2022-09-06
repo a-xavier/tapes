@@ -2543,6 +2543,8 @@ def reference_used(full_stuff):
             sys.exit(1)
     except IndexError:
         fest_col = full_stuff['Feature']
+        ref_used = 'refGene'
+        '''
         if fest_col[0].startswith('NM_'):
             ref_used = 'refGene'
             print(tmp_stmp() + 'Gene annotation : ' + ref_used)
@@ -2555,6 +2557,7 @@ def reference_used(full_stuff):
         else:
             print('Could not determine annotation used, exiting...')
             sys.exit(1)
+        '''
     return ref_used
 
 
