@@ -23,6 +23,7 @@ import pandas as pd
 from pandas import errors
 from scipy.stats import fisher_exact
 import matplotlib
+matplotlib.use('Agg')
 from difflib import get_close_matches
 if 'win' not in sys.platform:
     from pysam import VariantFile
