@@ -40,6 +40,7 @@ def vep_process_vcf(vcf_path, acmg_db_path):
     df = pd.concat(tp, ignore_index=True)
     # df = pd.read_csv(vcf_path, sep='\t', header=head_line)
     df.rename(columns={'#CHROM': 'CHROM'}, inplace=True)
+    df['CHROM'] = df['CHROM'].astype(str)
     df['CHROM'] = df['CHROM'].str.replace('chr', '')
 
     try:
