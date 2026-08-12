@@ -757,8 +757,6 @@ def check_vep_BS2(full_stuff, BS2_hom_het_dict, rec_list, dom_list, adult_list, 
 
 
 def check_vep_BS3(full_stuff):
-    review_series = full_stuff['ClinVar_CLNREVSTAT'].astype(str)
-    sig_series = full_stuff['ClinVar_CLNSIG'].astype(str)
     rev_stat = ['reviewed_by_expert_panel', 'practice_guideline']
 
     BS3_contrib = (np.where((full_stuff['ClinVar_CLNSIG'].str.lower() == 'benign') &
