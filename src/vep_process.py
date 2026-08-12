@@ -22,7 +22,8 @@ def vep_process_vcf(vcf_path, acmg_db_path):
     head_line = 0
     print(tf.tmp_stmp()+"VEP vcf processing", end=' ', flush=True)
 
-    with open(vcf_path, 'r') as in_vcf:
+    open_func = gzip.open if vcf_path.endswith('.gz') else open
+    with open_func(vcf_path, 'rt') as in_vcf:
         for line in in_vcf.readlines():
             if line.startswith('##') and "ID=CSQ" not in line and "ID=ANN" not in line:
                 head_line = head_line + 1

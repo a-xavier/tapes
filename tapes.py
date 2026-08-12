@@ -23,36 +23,19 @@ parser = argparse.ArgumentParser(prog='tapes', usage=tf.help_message(), add_help
 
 parser.add_argument('option', type=str, nargs=1,
                     help="Choose the main function:\n"
-                         "annotate: use annovar to annotate a vcf file\n"
                          "sort: use tapes to prioritise variants\n"
-                         "db: see or download databases\n"
+                         "decompose: split complex VCF records into simple variants\n"
                          "analyse: use an already analysed file to produce a specific report",
-                    choices=['annotate', 'sort', 'db', 'decompose', 'analyse', 'analyze'])
+                    choices=['sort', 'decompose', 'analyse', 'analyze'])
 
 parser.add_argument('-i', '--input',
                     required=False,
-                    help="Path of the input csv file annotated by annovar",
+                    help="Path of the input VEP-annotated VCF or preprocessed CSV/TSV file",
                     type=str)
 parser.add_argument('-o', '--output',
                     required=False,
-                    help="Path of the sorted output csv file",
+                    help="Path of the sorted output csv file or output directory",
                     type=str)
-parser.add_argument('-b', '--build_db',
-                    help="Download databases flagged for download : /humandb will be populated with relevant databases\n"
-                         "Also downloads the necessary tapes databases if necessary",
-                    action="store_true",
-                    required=False)
-
-parser.add_argument('-A', '--annovar',
-                    nargs='?',
-                    help="Path of the annovar FOLDER",
-                    type=str,
-                    required=False)
-parser.add_argument('-s', '--see_db',
-                    help="Path of the annovar FOLDER : /humandb will be searched for relevant databases and write the"
-                         "result in db_config.json in tapes current directory",
-                    action="store_true",
-                    required=False)
 parser.add_argument('-e', '--enrichr',
                     help="use --enrichr to analyse top mutations (>0.85 in Total score) with EnrichR API"
                          "Default is GO_Biological_Process_2018, see http://amp.pharm.mssm.edu/Enrichr/#stats to see "
@@ -157,17 +140,15 @@ else:
     args = parser.parse_args()
     
 # Process paths to transform into absolute 
-if args.annovar:
-    args.annovar = os.path.abspath(args.annovar)
-if args.input != None:
+if args.input is not None:
     args.input = os.path.abspath(args.input)
-if args.output != None:
-    if args.output[-4:] == ('.csv' or '.vcf' or '.txt' or '.tsv'):
+if args.output is not None:
+    if args.output.endswith(('.csv', '.vcf', '.txt', '.tsv')):
         args.output = os.path.abspath(args.output)
     elif args.output[-1] == '/':
-        args.output = (os.path.abspath(args.output)+'/')
-    elif args.output[-1] =='\\':
-        args.output = (os.path.abspath(args.output)+'\\')
+        args.output = os.path.abspath(args.output) + '/'
+    elif args.output[-1] == '\\':
+        args.output = os.path.abspath(args.output) + '\\'
     else:
         pass
 
@@ -227,10 +208,7 @@ def main():
     ### TESTS ###
     # FIRST LOADS ALL NECESSARY DATABASES
     global tup_databases
-    if soft_used == 'annovar':
-        tup_databases = tf.load_databases(acmg_db_path, ref_anno, args.assembly, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
-    elif soft_used == 'vep':
-        tup_databases = vp.load_vep_databases(acmg_db_path, args.assembly, ref_anno, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
+    tup_databases = vp.load_vep_databases(acmg_db_path, args.assembly, ref_anno, args.trio, args.pp2_percent, args.pp2_min, args.bp1_percent)
 
     # IF TRIO DATA IS THERE EXCLUDE HEALTHY PARENTS
     if args.trio is not None:
@@ -254,26 +232,18 @@ def main():
         # problem HIGH USAGE OF RAM FOR EACH PROCESS (Because of databases copied to child processes)
 
         pool = Pool(processes=args.threads)
-        if soft_used == "annovar":
-            result = pool.starmap(tf.process_data, list_args)
-        elif soft_used == 'vep':
-            result = pool.starmap(vp.process_data, list_args)
+        result = pool.starmap(vp.process_data, list_args)
         pool.close()
         pool.join()
         final_stuff = tf.pd.concat(result)  # Merge all pieces for final dataframe
-        if soft_used == 'vep':
-            final_stuff = vp.rename_columns(final_stuff, ref_anno)
+        final_stuff = vp.rename_columns(final_stuff, ref_anno)
         final_stuff.drop(list_healthy, axis=1, inplace=True)
         ###END MUTLTIPROCESS###
 
     else:
-        if soft_used == 'annovar':
-            final_stuff = tf.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
-            final_stuff.drop(list_healthy, axis=1, inplace=True)
-        elif soft_used == 'vep':
-            final_stuff = vp.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
-            final_stuff = vp.rename_columns(final_stuff, ref_anno)
-            final_stuff.drop(list_healthy, axis=1, inplace=True)
+        final_stuff = vp.process_data(full_stuff, ref_anno, number_of_samples, tup_databases, args.cutoff)
+        final_stuff = vp.rename_columns(final_stuff, ref_anno)
+        final_stuff.drop(list_healthy, axis=1, inplace=True)
 
     final_stuff = tf.sort_by_pathogenicity(final_stuff)
 
@@ -347,91 +317,12 @@ if __name__ == "__main__":
     if args.test == True:
         test_main()
 
-    # Process data from annovar annotated files # EVEN IF NOT FULLY FREESOME COMPLIANT without acmg flag
     elif (args.output and args.input and args.assembly) and args.option == ['sort']:
         print('''
         ***TAPES: SORT***
         ''')
         main()
 
-    # BUILD annovar DATABASES
-    elif args.option == ['db'] and args.build_db is True:
-        print('''
-        ***TAPES: DOWNLOAD DATABASE***
-        ''')
-        # PROCESS annovar PATH
-        if args.annovar is None:  # If annovar folder not supplied, look at the config file
-            try:
-                with open('./src/db_config.json', 'r') as db_cfg:
-                    cfg_dict = json.load(db_cfg)
-                annovar_path = cfg_dict["annovar_path"]['annovar_path']
-            except FileNotFoundError:
-                print("No annovar path given and no db_config.json found")
-        else:
-            annovar_path = args.annovar
-        tf.build_annovar_db(annovar_path, args.assembly, args.acmg)
-        tf.check_for_acmg_databases(acmg_db_path)
-        tf.check_online_annovar_dbs(annovar_path)
-        tf.scan_for_db(annovar_path)
-        tf.writing_db_to_file(annovar_path, args.acmg_db)
-        tf.amcg_db_download(acmg_db_path)
-
-    # ANNOTATE VCF FILE
-    elif (args.input and args.output) is not None and args.option == ['annotate']:
-        print('''
-        ***TAPES: ANNOTATE***
-        ''')
-        # PROCESS annovar PATH
-        if args.annovar is None:  # If annovar folder not supplied, look at the config file
-            try:
-                with open('./src/db_config.json', 'r') as db_cfg:
-                    cfg_dict = json.load(db_cfg)
-                annovar_path = cfg_dict["annovar_path"]['annovar_path']
-            except FileNotFoundError:
-                print("No annovar path given and no db_config.json found")
-        else:
-            annovar_path = args.annovar
-        if args.output[-4:] == '.csv' or args.output[-4:] == '.txt':
-            tf.process_annotate_vcf(args.input, args.output, annovar_path, args.assembly, args.ref_anno, args.acmg)
-            tf.merge_sample_info_in_annotated_csv(args.output, args.assembly)
-        elif args.output[-4:] == '.vcf':
-            tf.process_annotate_vcf(args.input, args.output, annovar_path, args.assembly, args.ref_anno, args.acmg)
-        else:
-            print('|| Could not determine the desired output type, please use either ".csv" or ".vcf" extension for the'
-                  ' output')
-            tf.sys.exit(1)
-
-    # SCAN annovar DATABASES ALREADY DOWNLOADED AND STORE THEM INSIDE OF A FILE
-
-    elif args.option == ['db'] and args.see_db is True:
-        print('''
-        ***TAPES: SEE DATABASE***
-        ''')
-        # PROCESS annovar PATH
-        if args.annovar is None:  # If annovar folder not supplied, look at the config file
-            try:
-                with open('./src/db_config.json', 'r') as db_cfg:
-                    cfg_dict = json.load(db_cfg)
-                annovar_path = cfg_dict["annovar_path"]['annovar_path']
-            except FileNotFoundError:
-                print("No annovar path given and no db_config.json found")
-        else:
-            args.annovar = os.path.abspath(args.annovar)
-            annovar_path = args.annovar
-        tf.check_online_annovar_dbs(annovar_path)
-        tf.scan_for_db(annovar_path)
-        tf.writing_db_to_file(annovar_path, args.acmg_db)
-
-    #  Decompose vcf
-    elif args.option == ['decompose'] and args.input is not None and args.output is not None :
-        print('''
-        ***TAPES: DECOMPOSE***
-        ''')
-        print(tf.tmp_stmp()+'Decomposing...', end=' ')
-        tf.decompose_vcf(args.input, args.output)
-        print(tf.tmp_stmp()+"Done")
-
-    # Re-analyse TODO REFINE PROCESS for just the analysis wanted (don't do xlsx report)
     elif (args.output and args.input and args.assembly) and (args.option == ['analyse'] or args.option == ['analyze']):
         print('''
         ***TAPES: RE-ANALYSE***
@@ -478,6 +369,14 @@ if __name__ == "__main__":
         elif output_type == 'txt':
             tf.csv_report_reanalyse(args.output, True)
             print(tf.tmp_stmp() + "Done")
+
+    elif args.option == ['decompose'] and args.input is not None and args.output is not None:
+        print('''
+        ***TAPES: DECOMPOSE***
+        ''')
+        print(tf.tmp_stmp()+'Decomposing...', end=' ')
+        tf.decompose_vcf(args.input, args.output)
+        print(tf.tmp_stmp()+"Done")
 
     else:
         print(tf.help_message())
