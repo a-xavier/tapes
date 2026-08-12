@@ -45,7 +45,7 @@ def open_csv_file(csv_file, acmg_db_path):
         try:
             dataframe = pd.read_csv(csv_file, low_memory=False)
             dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-            soft_used = 'annovar'
+            soft_used = 'vep'
         except errors.ParserError:
             tmp_file = csv_file+'_tmp.csv'
             print(tmp_stmp()+'Parser error, processing input file...', end="")
@@ -56,28 +56,24 @@ def open_csv_file(csv_file, acmg_db_path):
                         outfile.write(nline)
             dataframe = pd.read_csv(tmp_file, low_memory=False)
             dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-            soft_used = 'annovar'
+            soft_used = 'vep'
             os.remove(tmp_file)
             print("Done")
         return dataframe, soft_used
-    elif os.path.isfile(csv_file) and csv_file[-4:] == '.vcf':
+    elif os.path.isfile(csv_file) and (csv_file.endswith('.vcf') or csv_file.endswith('.vcf.gz')):
         soft_used = check_which_soft_used(csv_file)
-        if soft_used == 'annovar':
-            dataframe = process_annotated_vcf(csv_file)
-            dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-        elif soft_used == 'vep':
-            # IMPORT JUST IN CASE OF VEP VCF
+        if soft_used == 'vep':
             import src.vep_process as vp
             dataframe = vp.vep_process_vcf(csv_file, acmg_db_path)
             dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-        elif soft_used is None:
-            print('|| No annotation found. Checked header for ANNOVAR or VEP annotations. Exiting...')
+        else:
+            print('|| No VEP annotation found. Checked header for CSQ or ANN annotations. Exiting...')
             sys.exit(1)
         return dataframe, soft_used
     elif os.path.isfile(csv_file) and (os.path.isfile(csv_file) and csv_file[-4:] == '.txt' or os.path.isfile(csv_file) and csv_file[-4:] == '.tsv'):
         dataframe = pd.read_csv(csv_file, sep='\t', low_memory=False) # TODO maybechange that, header=0, engine='python',index_col=False)
         dataframe[['Start', 'End']] = dataframe[['Start', 'End']].astype(int)
-        soft_used = 'annovar'
+        soft_used = 'vep'
         return dataframe, soft_used
     elif os.path.isfile(csv_file) is False:
         print('File does not exist')
@@ -147,409 +143,9 @@ def export_sorted_csv(export_dataframe, export_filepath, tab_flag):
     return
 
 
-def process_path(entered_path):  # takes relatives or absolute paths and transforms it into absolute pathw
+def process_path(entered_path):  # takes relatives or absolute paths and transforms it into absolute path
     processed_path = os.path.abspath(entered_path)
     return processed_path
-
-
-def build_annovar_db(path_to_annovar_folder_rel, assembly, acmg_tag):
-    current_wd = os.path.dirname(os.path.realpath(__file__))
-    config_file = os.path.join(current_wd, 'db_config.json')
-    path_to_annovar_folder = process_path(path_to_annovar_folder_rel)
-    if os.path.isdir(path_to_annovar_folder):
-        os.chdir(path_to_annovar_folder)
-        print('This is where the annovar folder is : {}'.format(path_to_annovar_folder))
-        if os.path.isdir('humandb') and os.path.isfile('annotate_variation.pl'):
-            print(tmp_stmp()+'Found /humandb directory and annotate_variation.pl')
-            if os.path.isfile("example/gene_fullxref_tapes.txt"):
-                print(tmp_stmp()+"Found tapes xref file")
-            else:
-                print('Processing full_xref file to full_xref_tapes. Please wait...', end = ' ')
-                subprocess.run(["""tr -d '"' <example/gene_fullxref.txt > example/gene_fullxref_tapes.txt"""], shell=True)
-                print('Done')
-
-            if os.path.isfile(config_file) and acmg_tag is False:
-                with open(config_file) as cf:
-                    conf_dict = json.load(cf)
-                    list_of_db_to_dl_hg_19 = []
-                    list_of_db_to_dl_hg_38 = []
-
-                for key in conf_dict["hg19"]:
-                    db = conf_dict["hg19"][key].strip().lower()
-                    if "down" in db :
-                        list_of_db_to_dl_hg_19.append(key)
-
-                for key in conf_dict["hg38"]:
-                    db = conf_dict["hg38"][key].strip().lower()
-                    if "down" in db :
-                        list_of_db_to_dl_hg_38.append(key)
-
-                if len(list_of_db_to_dl_hg_19) == 0 and len(list_of_db_to_dl_hg_38) == 0:
-                    print(tmp_stmp()+"Nothing is flagged for download, exiting...")
-                    return
-
-                print(tmp_stmp()+'Some databases flagged for download. They will be downloaded now '
-                      ''
-                      ' (THIS WILL TAKE SOME TIME):'
-                      '')
-
-                for telecharger in list_of_db_to_dl_hg_19:
-                    if telecharger in reg_anno():
-                        print(tmp_stmp()+"Using ANNOVAR to download {}".format(telecharger))
-                        subprocess.run(['perl', 'annotate_variation.pl', '-build', 'hg19',
-                                        '-downdb', '{}'.format(telecharger), 'humandb/'])
-                    else:
-                        print(tmp_stmp()+"Using ANNOVAR to download {}".format(telecharger))
-                        subprocess.run(['perl', 'annotate_variation.pl', '-buildver', 'hg19', '-downdb', '-webfrom'
-                                           ,'annovar', '{}'.format(telecharger), 'humandb/'])
-
-                for telecharger in list_of_db_to_dl_hg_38:
-                    if telecharger in reg_anno():
-                        print(tmp_stmp()+"Using ANNOVAR to download {}".format(telecharger))
-                        subprocess.run(['perl', 'annotate_variation.pl', '-build', 'hg38', '-downdb',
-                                        '{}'.format(telecharger), 'humandb/'])
-                    else:
-                        print(tmp_stmp()+"Using ANNOVAR to download {}".format(telecharger))
-                        subprocess.run(['perl', 'annotate_variation.pl', '-buildver', 'hg38', '-downdb',
-                                        '-webfrom', 'annovar', '{}'.format(telecharger), 'humandb/'])
-                os.chdir(current_wd)
-                print("All done, you can now use tapes to prioritise your variants")
-            elif os.path.isfile(config_file) and acmg_tag is True:
-
-                with open(config_file) as cf:
-                    conf_dict = json.load(cf)
-
-                telecharger = []
-                print(tmp_stmp()+'{} will be downloaded'.format(telecharger))
-
-                for db in acmg_db()[0].split(','):
-                    if conf_dict[assembly][db].lower() == 'missing':
-                        telecharger.append(db)
-                for item in telecharger:
-                    print(tmp_stmp() + "Using ANNOVAR to download {}".format(item))
-                    subprocess.run(['perl', 'annotate_variation.pl', '-build', '{}'.format(assembly),
-                                    '-downdb', '-webfrom', 'annovar', '{}'.format(item), 'humandb/'])
-            else:
-                print(tmp_stmp()+"No config file found, please run 'python tapes.py --see-db -A /path/to/annovar/folder' first ")
-                sys.exit(1)
-
-        elif not os.path.isdir('humandb'):
-            print(tmp_stmp()+'No /humandb directory found. Exiting...')
-            sys.exit(1)
-        elif not os.path.isfile('annotate_variation.pl'):
-            print(tmp_stmp()+'annotate_variation.pl not found. Exiting...')
-            sys.exit(1)
-    elif not os.path.isdir(path_to_annovar_folder):
-        print(tmp_stmp()+"This is not an existing directory. Exiting...")
-        sys.exit(1)
-    return
-
-
-def acmg_db():
-    return ('avsnp150,clinvar_20180603,dbnsfp35c,dbscsnv11,gnomad_genome,gnomad_exome', 'f,f,f,f,f,f')
-
-
-def process_annotate_vcf(vcf_path, output_path, path_to_annovar_folder_rel, assembly, generef, acmg_tag):
-    #avdb_list_file = os.path.join(path_to_annovar_folder_rel, '{}_avdblist.txt'.format(assembly))
-
-    tapes_wd = os.path.dirname(os.path.realpath(__file__))
-
-    global vcf_path_abs
-    vcf_path_abs = process_path(vcf_path)
-
-    if output_path[-4:] == '.csv' or output_path[-4:] == '.txt':
-        vcf_out = False
-    elif output_path[-4:] == '.vcf':
-        vcf_out = True
-
-    output_path_abs = process_path(output_path)
-
-    output_path_abs_no_ext = os.path.splitext(output_path_abs)[0]
-
-    path_to_annovar_folder = process_path(path_to_annovar_folder_rel)
-
-    output_name = output_path.split('/')[-1]
-
-    output_path_only = output_path_abs.replace(output_name, '')
-
-    vcf_db_file = os.path.join(os.getcwd(), 'src/db_vcf.json')
-    if os.path.isdir(path_to_annovar_folder):
-        os.chdir(path_to_annovar_folder)
-        if os.path.isfile('convert2annovar.pl') and os.path.isfile('table_annovar.pl'):
-            print('Found convert2annovar.pl / table_annovar.pl and the tapes version of fullxref')
-            
-            if not os.path.isfile('example/gene_fullxref_tapes.txt') :
-                print('Processing full_xref file to full_xref_tapes. Please wait...', end = ' ')
-                subprocess.run(["""tr -d '"' <example/gene_fullxref.txt > example/gene_fullxref_tapes.txt"""], shell=True)
-                print('Done')
-
-            vcf_path_abs = process_input_variant_file(vcf_path_abs)
-            decomp_test = test_if_decomposed(vcf_path_abs)
-            vcf_path_abs = decomp_test[0]  # Test if the vcf file is decomposed or not
-            was_decomposed = decomp_test[1] # if not creates a decomposed vcf and then annotates that
-
-            # Read the config file and create valid annovar command
-            if acmg_tag is False:
-                with open(vcf_db_file, 'r') as cf: # read config file
-                    dict = json.load(cf)
-                    list_to_use = []
-                for key in dict[assembly]:
-                    if dict[assembly][key] == 'YES':
-                        list_to_use.append(key) # create the list of all databases present
-                # Remove unusable databases or or other acessory databases
-                remove_list = ['avdblist', 'kgXref', 'knownGeneMrna.fa', 'ensGeneMrna.fa', 'refGeneMrna.fa', 'refGeneVersion' ]
-                list_to_use = [n for n in list_to_use if n not in remove_list]
-
-                # Check version database
-                '''version_df = pd.read_csv(avdb_list_file, sep='\t')
-                version_df.columns = ['db', 'date', 'size']'''
-
-                to_remove = ["knownGene", "refGene", 'ensGene']  # because it should be first and is included in
-                #  the command line which ref to use
-                final_list = [x for x in list_to_use if x not in to_remove]
-                final_list_str = ','.join(final_list)
-                string_type = []
-                db_type = db_type_bank()
-                # ASSING THE TYPE OF OPERATION AND BEST GUESS IS F IF THE TYPE IS UNKNOWN
-                for item in final_list:
-                    try:
-                        string_type.append(db_type[item])
-                    except KeyError:
-                        string_type.append('f')
-                string_type_str = ",".join(string_type)
-
-            elif acmg_tag is True:
-                print(tmp_stmp()+'Annotating using preset settings for ACMG classification')
-                final_list_str = acmg_db()[0]
-                string_type_str = acmg_db()[1]
-
-            if vcf_out is False and output_path_abs[-4:] == ".csv":
-
-                print(tmp_stmp()+'Converting to avinput')
-                subprocess.run(['perl', 'convert2annovar.pl', '-format', 'vcf4', '{}'.format(vcf_path_abs), '-outfile',
-                                '{}.avinput'.format(output_path_abs_no_ext), '-allsample', '-withfreq', '-includeinfo'])
-                print(tmp_stmp()+'Converted to avinput at {}.avinput'.format(output_path_abs_no_ext))
-                subprocess.run(['perl', 'table_annovar.pl', '{}.avinput'.format(output_path_abs_no_ext), 'humandb/',
-                                '-buildver', '{}'.format(assembly), '-out', '{}'.format(output_path_abs_no_ext),
-                                '-remove', '-protocol',
-                                '{},{}'.format(generef, final_list_str),
-                                '-operation', 'gx,{}'.format(string_type_str), '-nastring', '.', '-csvout', '-polish', '-xref',
-                                'example/gene_fullxref_tapes.txt'])
-
-                # '-thread', '{}'.format(multiprocessing.cpu_count()) # LEAVE MULTITHREAD OUT FOR NOW BECAUSE IT CRASHED MY OWN COMPUTER
-
-                os.rename('{}.{}_multianno.csv'.format(output_path_abs_no_ext, assembly), '{}'.format(os.path.join(output_path_only, output_name)))
-
-                #subprocess.run(['mv', '{}.{}_multianno.csv'.format(output_path_abs_no_ext, assembly), '{}'.format(os.path.join(output_path_only, output_name))])
-
-            elif vcf_out is False and output_path_abs[-4:] == ".txt":
-
-                print(tmp_stmp()+'Converting to avinput')
-                subprocess.run(['perl', 'convert2annovar.pl', '-format', 'vcf4', '{}'.format(vcf_path_abs), '-outfile',
-                                '{}.avinput'.format(output_path_abs_no_ext), '-allsample', '-withfreq', '-includeinfo'])
-                print(tmp_stmp()+'Converted to avinput at {}.avinput'.format(output_path_abs_no_ext))
-                subprocess.run(['perl', 'table_annovar.pl', '{}.avinput'.format(output_path_abs_no_ext), 'humandb/',
-                                '-buildver', '{}'.format(assembly), '-out', '{}'.format(output_path_abs_no_ext),
-                                '-remove', '-protocol',
-                                '{},{}'.format(generef, final_list_str),
-                                '-operation', 'gx,{}'.format(string_type_str), '-nastring', '.', '-polish', '-xref',
-                                'example/gene_fullxref_tapes.txt'])
-
-                # '-thread', '{}'.format(multiprocessing.cpu_count()) # LEAVE MULTITHREAD OUT FOR NOW BECAUSE IT CRASHED MY OWN COMPUTER
-
-                #subprocess.run(['mv', '{}.{}_multianno.txt'.format(output_path_abs_no_ext, assembly), '{}'.format(os.path.join(output_path_only, output_name))])
-                os.rename('{}.{}_multianno.txt'.format(output_path_abs_no_ext, assembly),
-                          '{}'.format(os.path.join(output_path_only, output_name)))
-
-            elif vcf_out is True:
-                subprocess.run(['perl', 'table_annovar.pl', '{}'.format(vcf_path_abs), 'humandb/',
-                                '-buildver', '{}'.format(assembly), '-out', '{}'.format(output_path_abs_no_ext),
-                                '-remove', '-protocol',
-                                '{},{}'.format(generef, final_list_str),
-                                '-operation', 'gx,{}'.format(string_type_str), '-nastring', '.', '-vcfinput',
-                                '-xref',
-                                'example/gene_fullxref_tapes.txt'])
-
-            os.chdir(tapes_wd) # Back to current working directory
-
-        else:
-            print('convert2annovar.pl and table_annovar.pl not found in {} or tapes_fullxref in /example'.format(path_to_annovar_folder))
-            sys.exit(1)
-
-    elif not os.path.isdir(path_to_annovar_folder):
-        print("{} is not an existing directory. Exiting...".format(path_to_annovar_folder))
-        sys.exit(1)
-    return
-
-
-def merge_sample_info_in_annotated_csv(csv_file, assembly):
-    print(tmp_stmp()+'Merging Sample genotype and Annotated csv/txt...', end=" ", flush=True)
-    abs_csv_file = process_path(csv_file)
-
-    #real_csv_file = csv_file.replace('.csv', '.{}_multianno.csv'.format(assembly)) # using annovar the actual output has hg multianno appended
-    if csv_file[-4:] == '.csv':
-        full_stuff = pd.read_csv(csv_file, sep=',') # Full dataframe annotated
-    elif csv_file[-4:] == '.txt':
-        full_stuff = pd.read_csv(csv_file, sep='\t') # Full dataframe annotated
-
-    if csv_file[-4:] == '.csv':
-        export_filepath = csv_file.replace('.csv', '_with_samples.csv') # Path and name of exported file
-
-        avinput_path = abs_csv_file.replace('.csv', '.avinput') # USE SAMPLE DATA FROM AVINPUT INSTEAD OF VCF
-    elif csv_file[-4:] == '.txt':
-        export_filepath = csv_file.replace('.txt', '_with_samples.txt')  # Path and name of exported file
-
-        avinput_path = abs_csv_file.replace('.txt', '.avinput')  # USE SAMPLE DATA FROM AVINPUT INSTEAD OF VCF
-
-    # extract sample names in vcf, skipping the header and capturing only the first line
-    with open(vcf_path_abs, 'r') as vf:
-        for line in vf.readlines():
-            if "##" in line:
-                pass
-            else:
-                headers_in_vcf = line
-                break
-    headers_in_vcf = headers_in_vcf.split()  # Split the vcf column line into a list
-
-    headers_in_vcf = headers_in_vcf[8:]  # Removing first columns from the header (the one not related to the
-
-    global number_of_samples
-
-    number_of_samples = len(headers_in_vcf) - 1  # -1 because we keep the FORMAT column for future uses (mainly to
-    # detect the presence of sample data or not
-    if 900 > number_of_samples > 1:
-        avinput_df = pd.read_csv(avinput_path, header=None, sep="\t")
-
-        avinput_df.drop(avinput_df.columns[range(0, 16)], axis=1, inplace=True)
-        avinput_df.columns = headers_in_vcf
-        for column in list(avinput_df.columns):
-            if column == 'FORMAT':
-                pass
-            else:
-                avinput_df[column].replace('0', '0/0', inplace=True)
-
-        # SPLIT THE GENOTYPE OF EACH SAMPLES
-        sep = ':'
-        for column in avinput_df.columns:
-            value = avinput_df[column].str.split(sep, n=1, expand=True)
-            avinput_df[column] = value[0]
-
-        if full_stuff.shape[0] != avinput_df.shape[0]:
-            print("\n"+tmp_stmp()+"Exiting because Avinput, vcf and annotated csv don't have the same number of rows. Try Decomposing your vcf")
-            sys.exit(1)
-        else:
-            pass
-
-        new_df = full_stuff.merge(avinput_df, left_index=True, right_index=True)
-
-        hom_list = []
-        het_list = []
-        norm_list = []
-
-        for line in range(0, new_df.shape[0]):
-            values_of_line = new_df.iloc[line].values
-            hom_count = 0
-            het_count = 0
-            normal_count = 0
-            for i in values_of_line:
-                if i in ["1/1", "2/2", "1|1", "2|2", '1/2', '1|2', '2|1']:
-                    hom_count = hom_count + 1
-                elif i in ['0/1', '0/2', '0|1', '0|2', '1|0', '2|0']:
-                    het_count = het_count + 1
-                elif i == '0/0' or i == '0|0':
-                    normal_count = normal_count + 1
-            hom_list.append(hom_count)
-            het_list.append(het_count)
-            norm_list.append(normal_count)
-
-        norm_in_df = pd.Series(norm_list)
-        het_in_df = pd.Series(het_list)
-        hom_in_df = pd.Series(hom_list)
-
-        new_df['WT count'] = norm_in_df.values
-        new_df['Het count'] = het_in_df.values
-        new_df['Hom count'] = hom_in_df.values
-
-        if csv_file[-4:] == '.csv':
-            new_df.to_csv(path_or_buf=export_filepath, index=False)
-        elif csv_file[-4:] == '.txt':
-            new_df.to_csv(path_or_buf=export_filepath, index=False, sep='\t')
-        print("Done")
-
-       ########" IF MORE THAN 900 SAMPLES #######
-
-    elif number_of_samples >= 900:
-        print('\n More than 900 samples detected, Keeping the numbers of WT/het/hom and discarding Genotype matrix')
-        avinput_df = pd.read_csv(avinput_path, header=None, sep="\t")
-
-        avinput_df.drop(avinput_df.columns[range(0, 16)], axis=1, inplace=True)
-        avinput_df.columns = headers_in_vcf
-        for column in list(avinput_df.columns):
-            if column == 'FORMAT':
-                pass
-            else:
-                avinput_df[column].replace('0', '0/0', inplace=True)
-
-        # SPLIT THE GENOTYPE VALUE from other infos in SAMPLES column
-        sep = ':'
-        for column in avinput_df.columns:
-            value = avinput_df[column].str.split(sep, n=1, expand=True)
-            avinput_df[column] = value[0]
-
-        hom_list = []
-        het_list = []
-        norm_list = []
-
-        for line in range(0, avinput_df.shape[0]):
-            values_of_line = avinput_df.iloc[line].values
-            hom_count = 0
-            het_count = 0
-            normal_count = 0
-            for i in values_of_line:
-                if i in ["1/1", "2/2", "1|1", "2|2", '1/2', '1|2', '2|1']:
-                    hom_count = hom_count + 1
-                elif i in ['0/1', '0/2', '0|1', '0|2', '1|0', '2|0']:
-                    het_count = het_count + 1
-                elif i == '0/0' or i == '0|0':
-                    normal_count = normal_count + 1
-            hom_list.append(hom_count)
-            het_list.append(het_count)
-            norm_list.append(normal_count)
-
-        norm_in_df = pd.Series(norm_list)
-        het_in_df = pd.Series(het_list)
-        hom_in_df = pd.Series(hom_list)
-
-        full_stuff['WT count'] = norm_in_df.values
-        full_stuff['Het count'] = het_in_df.values
-        full_stuff['Hom count'] = hom_in_df.values
-
-        if csv_file[-4:] == '.csv':
-            full_stuff.to_csv(path_or_buf=export_filepath, index=False)
-        elif csv_file[-4:] == '.txt':
-            full_stuff.to_csv(path_or_buf=export_filepath, index=False, sep='\t')
-
-        print("Done")
-
-    else:
-        print('\n'+tmp_stmp()+'Only one sample found in vcf', end=' ')
-        pass
-
-    # REMOVE TEMPORARY VCF AND DECOMPOSED VCF IF CREATED
-    if vcf_path_abs.endswith('_tmp_decomposed.vcf'):
-        os.remove(vcf_path_abs)
-        tmp2 = vcf_path_abs.replace('_tmp_decomposed.vcf', '_tmp.vcf')
-        os.remove(tmp2)
-        print(tmp_stmp()+'Removed temporary files')
-    elif vcf_path_abs.endswith('_tmp.vcf'):
-        os.remove(vcf_path_abs)
-        print(tmp_stmp() + 'Removed temporary files')
-    elif vcf_path_abs.endswith('_decomposed.vcf'):
-        os.remove(vcf_path_abs)
-        print(tmp_stmp() + 'Removed temporary files')
-    else:
-        pass
-    return
 
 
 def check_proportion_of_transcripts_affected(full_table, acmg_db_path, ref_anno):
@@ -870,246 +466,6 @@ def export_to_formatted_xlsx(full_stuff, output_file, number_of_samples, ref_ann
         pass
     # SAVES THE EXCEL FILE
     writer.save()
-    return
-
-
-def check_online_annovar_dbs(annovar_path):
-    global tapes_wd
-    tapes_wd = os.path.dirname(os.path.realpath(__file__))
-    os.chdir(annovar_path)
-    print(tmp_stmp()+"Fetching ANNOVAR Alldb file")
-    subprocess.run(['perl', 'annotate_variation.pl', '-buildver', 'hg19', '-downdb', '-webfrom', 'annovar', 'avdblist', './'])
-    outfile_hg19 = os.path.join(annovar_path, "hg19_avdblist.txt")
-
-    subprocess.run(
-        ['perl', 'annotate_variation.pl', '-buildver', 'hg38', '-downdb', '-webfrom', 'annovar', 'avdblist', './'])
-    outfile_hg38 = os.path.join(annovar_path, "hg38_avdblist.txt")
-    global all_db
-    all_db = []
-    with open(outfile_hg19, 'r') as file:
-        for line in file.readlines():
-            line = line.split("\t")[0]
-            if ".idx.gz" in line:
-                pass
-            else:
-                #line = line.replace("hg19_", "")
-                line = line.replace(".gz", "")
-                line = line.replace(".txt", "")
-                line = line.replace(".zip", "")
-                all_db.append(line)
-    with open(outfile_hg38, 'r') as file:
-        for line in file.readlines():
-            line = line.split("\t")[0]
-            if ".idx.gz" in line:
-                pass
-            else:
-                #line = line.replace("hg38_", "")
-                line = line.replace(".gz", "")
-                line = line.replace(".txt", "")
-                line = line.replace(".zip", "")
-                all_db.append(line)
-
-    all_db = set(all_db)
-
-    return
-
-
-def scan_for_db(annovar_path):
-    annovar_path_absolute = process_path(annovar_path)
-    human_db_path = os.path.join(annovar_path_absolute, "humandb")
-    pre_loaded_db = ['hg19_refGeneWithVer.txt', 'genometrax-sample-files-gff', 'GRCh37_MT_ensGene.txt',
-                     'GRCh37_MT_ensGeneMrna.fa', 'hg19_example_db_gff3.txt',
-                     'hg19_refGeneWithVerMrna.fa', 'hg19_MT_ensGeneMrna.fa',
-                     'hg19_example_db_generic.txt', 'hg19_MT_ensGene.txt']
-    if os.path.isdir(human_db_path):
-        all_files = os.listdir(human_db_path)
-        all_added_files = list(set(all_files) - set(pre_loaded_db))
-        global hg_19_list
-        global hg_38_list
-        hg_19_list = []
-        hg_38_list = []
-        for file_name in all_added_files:
-            if 'hg19' in file_name:
-                file_name = file_name.replace(".gz", "")
-                file_name = file_name.replace("hg19_", "")
-                file_name = file_name.replace(".txt", "")
-                file_name = file_name.replace(".idx", "")
-                file_name = file_name.replace(".zip", "")
-                hg_19_list.append(file_name)
-
-            elif 'hg38' in file_name:
-                file_name = file_name.replace(".gz", "")
-                file_name = file_name.replace("hg38_", "")
-                file_name = file_name.replace(".txt", "")
-                file_name = file_name.replace(".idx", "")
-                file_name = file_name.replace(".zip", "")
-                hg_38_list.append(file_name)
-        hg_19_list = set(hg_19_list)
-        hg_38_list = set(hg_38_list)
-
-    else:
-        print("Can't find /humandb folder")
-    return
-
-
-def writing_db_to_file(annovar_path, acmg_db_path):
-    acmg_db_path = process_path(acmg_db_path)
-    os.chdir(tapes_wd)
-    all_db_hg19_x = [x for x in all_db if "hg19" in x]
-    all_db_hg38_x = [x for x in all_db if "hg38" in x]
-    # No idea why it doesnt want to do inplace replace
-    all_db_hg19 = []
-    for item in all_db_hg19_x:
-        item = item.replace("hg19_", "")
-        all_db_hg19.append(item)
-
-    all_db_hg38 = []
-    for item in all_db_hg38_x:
-        item = item.replace("hg38_", "")
-        all_db_hg38.append(item)
-
-    try:
-        # See if downloaded db is in the list of all db
-        list_for_dict_hg19 = []
-        for item in all_db_hg19:
-            if item in hg_19_list:
-                a = (item, 'OK')
-                list_for_dict_hg19.append(a)
-            elif item not in hg_19_list:
-                a = (item, 'MISSING')
-                list_for_dict_hg19.append(a)
-        # Add downloaded db even if it is not in the list of all db (somme are missing like genomicSuperdup)
-        for item in hg_19_list:
-            if item not in all_db_hg19:
-                a = (item, 'OK')
-                list_for_dict_hg19.append(a)
-
-        list_for_dict_hg38 = []
-        for item in all_db_hg38:
-            if item in hg_38_list:
-                a = (item, 'OK')
-                list_for_dict_hg38.append(a)
-            elif item not in hg_38_list:
-                a = (item, 'MISSING')
-                list_for_dict_hg38.append(a)
-
-        for item in hg_38_list:
-            if item not in all_db_hg38:
-                a = (item, 'OK')
-                list_for_dict_hg38.append(a)
-
-        # If genomic superdup and cytobands or other region anno are not there, add them as missing
-
-        for reg in reg_anno():
-            if reg not in list_for_dict_hg19[0]:
-                a = (reg, 'MISSING')
-                list_for_dict_hg19.append(a)
-            elif reg in list_for_dict_hg19[0]:
-                a = (reg, 'OK')
-                list_for_dict_hg19.append(a)
-            if reg not in list_for_dict_hg38[0]:
-                a = (reg, 'MISSING')
-                list_for_dict_hg38.append(a)
-            elif reg in list_for_dict_hg38[0]:
-                a = (reg, 'OK')
-                list_for_dict_hg38.append(a)
-
-
-
-        # Join both dictionaries plus annovar path
-        dico_19 = dict(sorted(list_for_dict_hg19))
-        dico_38 = dict(sorted(list_for_dict_hg38))
-
-        final_dict = {"hg19": dico_19,
-                      "hg38": dico_38,
-                      "annovar_path": {"annovar_path": annovar_path},
-                      "acmg_db_path": {"acmg_db_path": acmg_db_path}
-
-        }
-        # DATABASES TO USE FOR VCF ANNOTATION
-        vcf_json = os.path.join(os.getcwd(), "db_vcf.json")
-        if not os.path.isfile(vcf_json):
-            open(vcf_json, "a").write("{}")
-        with open(vcf_json, 'r') as vj_there:
-            already_there_vcf_dict = json.load(vj_there)
-
-            # Build new dict without taking care of the present dict
-            db_to_use_vcf_19 = []
-            db_to_use_vcf_38 = []
-
-            for key in final_dict['hg19']:
-                if final_dict['hg19'][key] == 'OK':
-                    if ".fa" in key:
-                        pass
-                    elif key == 'kgXref' or key == 'refGeneVersion' or key == 'avdblist':
-                        pass
-                    else:
-                        a = (key, 'NO')
-                        db_to_use_vcf_19.append(a)
-
-            for key in final_dict['hg38']:
-                if final_dict['hg38'][key] == 'OK':
-                    if ".fa" in key:
-                        pass
-                    elif key == 'kgXref' or key == 'refGeneVersion' or key == 'avdblist':
-                        pass
-                    else:
-                        a = (key, 'NO')
-                        db_to_use_vcf_38.append(a)
-
-            vcf_annotation_dict = {"hg19": dict(db_to_use_vcf_19),
-                                   "hg38": dict(db_to_use_vcf_38)}
-            try:
-                for key in vcf_annotation_dict['hg19']:
-                    if key in already_there_vcf_dict['hg19']:
-                        pass
-                    else:
-                        already_there_vcf_dict['hg19'][key] = 'NO'
-
-                for key in vcf_annotation_dict['hg38']:
-                    if key in already_there_vcf_dict['hg38']:
-                        pass
-                    else:
-                        already_there_vcf_dict['hg38'][key] = 'NO'
-
-                with open(vcf_json, "w") as vj:
-                    json.dump(already_there_vcf_dict, vj, indent=1)
-            except KeyError:
-                with open(vcf_json, "w") as vj:
-                    json.dump(vcf_annotation_dict, vj, indent=1)
-
-        # DATABASE DL CONFIG FILE
-        config_json = os.path.join(os.getcwd(), "db_config.json")
-        # Create config file if it does not exist
-        if not os.path.isfile(config_json):
-            open(config_json, "a").write("{}")
-
-        # Write (and overwrite) everything to file
-        with open(config_json, "w") as dj:
-            json.dump(final_dict, dj, indent=1)
-        print("ANNOVAR humandb folder location : ")
-        print(annovar_path)
-        print('hg19 databases present in /humandb :')
-        #  Nicer output than just print list
-        foolist = [k for k,v in final_dict['hg19'].items() if v == 'OK']
-        if len(foolist) <= 3:
-            for x in foolist: print(x)
-        else:
-            for a, b, c in zip(foolist[::3], foolist[1::3], foolist[2::3]):
-                print('{:<30}{:<30}{:<}'.format(a, b, c))
-
-        print()
-        print('hg38 databases present in /humandb :')
-        foolist = [k for k, v in final_dict['hg38'].items() if v == 'OK']
-        if len(foolist) <= 3:
-            for x in foolist: print(x)
-        else:
-            for a, b, c in zip(foolist[::3], foolist[1::3], foolist[2::3]):
-                print('{:<30}{:<30}{:<}'.format(a, b, c))
-        print()
-        print(tmp_stmp()+'Saved db_config.json in {}'.format(os.getcwd()))
-    except NameError:
-        pass
     return
 
 
@@ -1710,14 +1066,11 @@ def check_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df, number_of_s
         print("Done")
         return PS4_contrib, o_ratio_list, conf_inter_list, p_value_list
 
-    elif ('WT count' and 'Het count' and 'Hom count') not in full_stuff.columns or number_of_samples < 15:
+    elif not {'WT count', 'Het count', 'Hom count'}.issubset(full_stuff.columns) or number_of_samples < 15:
         PS4_contrib = []
-        try:  ## FOR ANNOVAR
-            snp_col = [s for s in full_stuff.columns if 'snp' in s][0]
-        except IndexError:  ## FOR VEP
-            snp_col = 'Existing_variation'
+        snp_col = 'Existing_variation'
         try:
-            rs_number_series = full_stuff[snp_col].str.split("&", n=1, expand=False).str[0] ## REMOVE VEP '&' string
+            rs_number_series = full_stuff[snp_col].str.split("&", n=1, expand=False).str[0]
             list_of_rsid = PS4_df['SNPID'].tolist()
             for rsid in rs_number_series:
                 if rsid in list_of_rsid:
@@ -3394,46 +2747,27 @@ python tapes.py {red}sort{end} -i /path/to/input_file.txt -o /path/to/output_fol
 
 python tapes.py {red}analyse{end} -i /path/to/input_file.csv -o /path/to/output_file.csv --options
 
-python tapes.py {red}annotate{end} -i /path/to/input_file.vcf -o /path/to/output_file.vcf --options
-
 python tapes.py {red}decompose{end} -i /path/to/input_file.vcf -o /path/to/output_file.vcf --options
 
-{blue}---ANNOVAR DB MANAGEMENT---{end}
-python tapes.py {red}db{end} -s -A /path/to/annovar  | See annovar databases
-python tapes.py {red}db{end} -b -A /path/to/annovar  | Download annovar databases
-
-
 {blue}---Main Function---{end}
-{red}annotate{end}, {red}sort{end}, {red}db{end}, {red}decompose{end}, {red}analyse{end}
+{red}sort{end}, {red}decompose{end}, {red}analyse{end}
                     Choose the main function: 
-                    annotate: use ANNOVAR to annotate a vcf file 
                     sort: use tapes to prioritise variants 
-                    db: see or download databases 
+                    decompose: split complex VCF records into simple variants 
                     analyse: use an already analysed file to produce a specific report
 
 {blue}---optional arguments---{end}
 -h , --help           Show this help message and exit
 
--i , --input          Path of the input file annotated by ANNOVAR
+-i , --input          Path of the input file annotated by VEP or a preprocessed CSV/TSV file
 
--o , --output         Path of the sorted output csv file
-
--b , --build_db       Download databases flagged for download : /humandb
-                      will be populated with relevant databases Also
-                      downloads the necessary tapes databases if
-                      necessary
-
--A , --annovar        Path of the ANNOVAR FOLDER
-
--s , --see_db         annovar_path/humandb will be searched
-                      for relevant databases and write the result in
-                      db_config.json in tapes current directory
+-o , --output         Path of the sorted output csv file or output folder
 
 -e , --enrichr        Use --enrichr to analyse top mutations (>0.85 in Total
-                      score) with EnrichR APIDefault is
+                      score) with EnrichR API. Default is
                       GO_Biological_Process_2018, see
                       http://amp.pharm.mssm.edu/Enrichr/#stats to see all
-                      available database
+                      available databases
 
 -d , --disease        Use the "Disease" Column to search for a specific term and
                       create a report, use quotes ' ' to use a multiple words term
@@ -3512,46 +2846,27 @@ python tapes.py {red}db{end} -b -A /path/to/annovar  | Download annovar database
 
         python tapes.py analyse -i /path/to/input_file.csv -o /path/to/output_file.csv --options
 
-        python tapes.py annotate -i /path/to/input_file.vcf -o /path/to/output_file.vcf --options
-
         python tapes.py decompose -i /path/to/input_file.vcf -o /path/to/output_file.vcf --options
 
-        ---ANNOVAR DB MANAGEMENT---
-        python tapes.py db -s -A /path/to/annovar  | See annovar databases
-        python tapes.py db -b -A /path/to/annovar  | Download annovar databases
-
-
         ---Main Function---
-        annotate, sort, db, decompose, analyse
+        sort, decompose, analyse
                             Choose the main function: 
-                            annotate: use ANNOVAR to annotate a vcf file 
                             sort: use tapes to prioritise variants 
-                            db: see or download databases 
+                            decompose: split complex VCF records into simple variants 
                             analyse: use an already analysed file to produce a specific report
 
         ---optional arguments---
         -h , --help           Show this help message and exit
 
-        -i , --input          Path of the input file annotated by ANNOVAR
+        -i , --input          Path of the input file annotated by VEP or a preprocessed CSV/TSV file
 
-        -o , --output         Path of the sorted output csv file
-
-        -b , --build_db       Download databases flagged for download : /humandb
-                              will be populated with relevant databases Also
-                              downloads the necessary tapes databases if
-                              necessary
-
-        -A , --annovar        Path of the ANNOVAR FOLDER
-
-        -s , --see_db         annovar_path/humandb will be searched
-                              for relevant databases and write the result in
-                              db_config.json in tapes current directory
+        -o , --output         Path of the sorted output csv file or output folder
 
         -e , --enrichr        Use --enrichr to analyse top mutations (>0.85 in Total
-                              score) with EnrichR APIDefault is
+                              score) with EnrichR API. Default is
                               GO_Biological_Process_2018, see
                               http://amp.pharm.mssm.edu/Enrichr/#stats to see all
-                              available database
+                              available databases
 
         -d , --disease        Use the "Disease" Column to search for a specific term and
                               create a report, use quotes ' ' to use a multiple words term
@@ -3720,13 +3035,13 @@ def flags():
 
 def check_which_soft_used(vcf_input):
     soft_used = None
-    with open(vcf_input, 'r') as input_vcf:
+    open_func = gzip.open if vcf_input.endswith('.gz') else open
+    with open_func(vcf_input, 'rt') as input_vcf:
         for line in input_vcf.readlines():
             if line.startswith('##'):
-                if 'ID=ANNOVAR_DATE' in line:
-                    soft_used = 'annovar'
-                elif "ID=CSQ," in line or "ID=ANN," in line:
+                if "ID=CSQ," in line:
                     soft_used = 'vep'
+                    break
             else:
                 break
     return soft_used
