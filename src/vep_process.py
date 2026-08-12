@@ -15,7 +15,7 @@ import json
 import sys
 import os
 import gzip
-
+import numpy as np
 
 def vep_process_vcf(vcf_path, acmg_db_path):
 
@@ -491,21 +491,20 @@ def check_vep_PS2_criteria(full_stuff, whole_dict):
         sys.exit(1)
     return PS2_total_contrib
 
-
 def check_vep_PS3(full_stuff):
-    review_series = full_stuff['clinvar_golden_stars']
-    sig_series = full_stuff['clinvar_clnsig']
+
+    review_series = full_stuff['ClinVar_CLNREVSTAT'].astype(str)
+    sig_series = full_stuff['ClinVar_CLNSIG'].astype(str)
 
     PS3_contrib = []
     for rev, sig in zip(review_series, sig_series):
-        if (rev.split('&')[0] == '3' or rev.split('&')[0] == '4') and \
-                (sig.split('&')[0] == '4' or sig.split('&')[0] == '5' or sig.split('&')[0] == '6'):
+        if ('pathogenic' in sig.lower() or 'drug_response' in sig.lower()) and\
+                ('practice_guideline' in rev or 'reviewed_by_expert_panel' in rev):
             PS3_contrib.append(1)
         else:
             PS3_contrib.append(0)
 
     return PS3_contrib
-
 
 def check_vep_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df, number_of_samples):
     return tf.check_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df, number_of_samples)
@@ -664,13 +663,24 @@ def check_vep_PP2(full_stuff, PP2_list, ref_anno):
 
 
 def check_vep_PP5(full_stuff):
-    path_series = full_stuff['clinvar_clnsig']
+    path_series = full_stuff['ClinVar_CLNSIG'].astype(str)
+    conflicting_series = full_stuff['ClinVar_CLNSIGCONF'].astype(str)
+
     PP5_contrib = []
-    for pred in path_series:
-        if '4' in pred or '5' in pred or '6' in pred:  # TODO INCLUDE OR NOT CONFLICTING
+
+    for i, pred in enumerate(path_series):
+        if 'conflicting' in pred.lower():
+            if 'pathogenic' in conflicting_series[i].lower() and 'benign' not in conflicting_series[i].lower():
+                PP5_contrib.append(1)
+            #elif 'benign' in conflicting_series[i].lower()  :
+            #    PP5_contrib.append(0)
+            else:
+                PP5_contrib.append(0)
+        elif 'pathogenic' in pred.lower():
             PP5_contrib.append(1)
         else:
             PP5_contrib.append(0)
+
     return PP5_contrib
 
 
@@ -747,15 +757,10 @@ def check_vep_BS2(full_stuff, BS2_hom_het_dict, rec_list, dom_list, adult_list, 
 
 
 def check_vep_BS3(full_stuff):
-    review_series = full_stuff['clinvar_golden_stars']
-    sig_series = full_stuff['clinvar_clnsig']
-    BS3_contrib = []
-    for rev, sig in zip(review_series, sig_series):
-        if (rev.split('&')[0] == '3' or rev.split('&')[0] == '4') and \
-                (sig.split('&')[0] == '2' or sig.split('&')[0] == '3'):
-            BS3_contrib.append(1)
-        else:
-            BS3_contrib.append(0)
+    rev_stat = ['reviewed_by_expert_panel', 'practice_guideline']
+
+    BS3_contrib = (np.where((full_stuff['ClinVar_CLNSIG'].str.lower() == 'benign') &
+                            (full_stuff['ClinVar_CLNREVSTAT'].str.lower().isin(rev_stat)), 1, 0)).tolist()
     return BS3_contrib
 
 
@@ -771,17 +776,26 @@ def check_vep_BP1(full_stuff, BP1_list, ref_anno):
             BP1_contrib.append(0)
     return BP1_contrib
 
-
 def check_vep_BP6(full_stuff):
-    path_series = full_stuff['clinvar_clnsig']
+
+    path_series = full_stuff['ClinVar_CLNSIG'].astype(str)
+    conflicting_series = full_stuff['ClinVar_CLNSIGCONF'].astype(str)
     BP6_contrib = []
-    for pred in path_series:
-        if pred.split("&")[0] == "2" or pred.split("&")[0] == "3":
+
+    for i, pred in enumerate(path_series):
+        if 'conflicting' in pred.lower():
+            if 'benign' in conflicting_series[i].lower() and 'pathogenic' not in conflicting_series[i].lower():
+                BP6_contrib.append(1)
+            #elif 'benign' in conflicting_series[i].lower()  :
+            #    BP6_contrib.append(0)
+            else:
+                BP6_contrib.append(0)
+        elif 'benign' in pred.lower():
             BP6_contrib.append(1)
         else:
             BP6_contrib.append(0)
-    return BP6_contrib
 
+    return BP6_contrib
 
 def check_vep_BP7(full_stuff, ref_anno):
     type_series = full_stuff['Consequence']
@@ -1046,14 +1060,11 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
         PS2_contrib_merged = [0] * df_length
         print("|| No trio data, skipping PS2")
 
-    # PS3 Well established in vitro in vivo functional studies *
-    # Considering Clinvar status "reviewed by panel of expert" and "practice guidelines"
-
-    if 'clinvar_golden_stars' in full_stuff.columns and 'clinvar_clnsig' in full_stuff.columns:
+    if 'ClinVar_CLNREVSTAT' in full_stuff.columns and 'ClinVar_CLNSIG' in full_stuff.columns:
         PS3_contrib = check_vep_PS3(full_stuff)
         print(tf.tmp_stmp() + 'PS3 done')
     else:
-        print('|| No "clinvar_golden_stars" or "clinvar_clnsig"  column found. Please annotate your data with a recent clinvar database')
+        print('|| No "ClinVar_CLNREVSTAT" or "ClinVar_CLNSIG"  column found. Please annotate your data with a recent clinvar database')
         PS3_contrib = [0] * df_length
 
     # PS4 ODD ratios or database
@@ -1134,11 +1145,12 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
 
     # PP5 is clinvar data
 
-    if 'clinvar_clnsig' in full_stuff.columns:
+    if 'ClinVar_CLNSIG' in full_stuff.columns:
         PP5_contrib = check_vep_PP5(full_stuff)
         print(tf.tmp_stmp() + 'PP5 done')
     else:
         PP5_contrib = [0] * df_length
+
     try:
         PP3_BP4_contribs = check_vep_PP3_and_BP4_dbnsfp(full_stuff)
         PP3_contrib = PP3_BP4_contribs[0]
