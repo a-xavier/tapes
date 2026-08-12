@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - master
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    name: Toy VEP sort
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml
+          activate-environment: tapes
+          auto-activate-base: false
+          miniforge-version: latest
+
+      - name: Show Python environment
+        run: |
+          python --version
+          conda info
+          conda list
+
+      - name: Run toy VEP sort smoke test
+        run: |
+          mkdir -p ci_output
+          python tapes.py sort -i ./toy_dataset/toy_vep.vcf -o ./ci_output/ --tab
+          test -n "$(find ci_output -type f -print -quit)"
