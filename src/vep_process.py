@@ -531,18 +531,18 @@ def check_vep_PM2(full_stuff, freq_exo_series, freq_geno_series, ref_anno):
     pli_series = pd.to_numeric(full_stuff['pLi'], errors='coerce')
     prec_series = pd.to_numeric(full_stuff['pRec'], errors='coerce')
     PM2_contrib = []
+    max_freq_series = tf.get_max_observed_population_frequency_from_series(full_stuff, freq_geno_series, freq_exo_series)
 
-    #  USE PLI SCORE FOR RECESSIVE DOMINANT CALLING
-    #  Dominant / Haploinsufficient if pli score > 0.85
-    #  Recessive if prec score > 0.85
-    #TODO INCLUDE IN PM2 DOMINANT VARIANT WITH MAF < 10e-6 (Probably means only one het individual in the cohort)
-    for pli, prec, exo, geno in zip(pli_series, prec_series, freq_exo_series, freq_geno_series):
-        if (pd.isna(exo) and pd.isna(geno) and pli >= 0.85) or (exo <= 0.000001 and geno <=0.000001 and pli >= 0.85) or \
-                (exo <= 0.000001 and pd.isna(geno) and pli >= 0.85) or (pd.isna(exo) and geno <=0.000001 and pli >= 0.85):  # Dominant/Haploinsufficient
+    # Use the highest observed population AF; missing annotation is not enough
+    # evidence to treat a variant as absent from controls.
+    for pli, prec, max_af in zip(pli_series, prec_series, max_freq_series):
+        if pd.isna(max_af):
+            PM2_contrib.append(0)
+            continue
+
+        if pli >= 0.85 and max_af <= 0.000001:  # Dominant/Haploinsufficient
             PM2_contrib.append(1)
-        elif ((exo and geno <= 0.005) or (pd.isna(exo) and pd.isna(geno)) or (exo <= 0.005 and pd.isna(geno)) or
-                (geno <= 0.005 and pd.isna(exo))) and (pli <= 0.85 or pd.isna(pli)):  # Recessive (no pLi requirement)
-
+        elif prec >= 0.85 and max_af <= 0.005:  # Recessive
             PM2_contrib.append(1)
         else:
             PM2_contrib.append(0)
@@ -684,17 +684,8 @@ def check_vep_PP5(full_stuff):
     return PP5_contrib
 
 
-def check_vep_BA1(freq_geno_series, freq_exo_series):
-    BA1_contrib = []
-    freq_geno_series.fillna(0, inplace=True)
-    freq_exo_series.fillna(0, inplace=True)
-    for geno, exo in zip(freq_geno_series, freq_exo_series):
-        freq = max(geno, exo)
-        if freq >= 0.05:
-            BA1_contrib.append(1)
-        else:
-            BA1_contrib.append(0)
-    return BA1_contrib
+def check_vep_BA1(full_stuff_or_freq_geno_series, freq_exo_series=None):
+    return tf.check_BA1(full_stuff_or_freq_geno_series, freq_exo_series)
 
 
 def check_vep_BS1(full_stuff, cutoff):
@@ -704,8 +695,7 @@ def check_vep_BS1(full_stuff, cutoff):
     max_freq_series = full_stuff[filter_columns].replace('.', 0)
     for column in max_freq_series.columns:
         max_freq_series[column] = pd.to_numeric(max_freq_series[column], errors='coerce')  # Convert each column to floats
-    max_freq_series = max_freq_series.astype("float")
-    max_freq_series = max_freq_series.max(axis=1)
+    max_freq_series = max_freq_series.fillna(0).max(axis=1)
 
     #max_freq_series = pd.to_numeric(max_freq_series, errors='coerce')
     BS1_contrib = []
@@ -1069,15 +1059,10 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
 
     # PS4 ODD ratios or database
 
-    if 'gnomAD_exomes_AF' in full_stuff.columns and 'gnomAD_genomes_AF' in full_stuff.columns:
-        freq_geno_series = pd.to_numeric(full_stuff['gnomAD_genomes_AF'], errors='coerce')
-        freq_exo_series = pd.to_numeric(full_stuff['gnomAD_exomes_AF'], errors='coerce')
+    if tf.get_population_frequency_columns(full_stuff):
+        freq_geno_series = pd.Series([0] * df_length)
+        freq_exo_series = pd.Series([0] * df_length)
         PS4_contrib = check_vep_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df, number_of_samples)
-        print(tf.tmp_stmp() + 'PS4 done')
-    elif 'gnomAD_genomes_AF' in full_stuff.columns and 'ExAC_AF' in full_stuff.columns:
-        freq_geno_series = pd.to_numeric(full_stuff['gnomAD_genomes_AF'], errors='coerce')
-        freq_exo_series = pd.to_numeric(full_stuff['ExAC_AF'], errors='coerce')
-        PS4_contrib = check_vep_PS4(full_stuff, freq_geno_series, freq_exo_series, PS4_df,number_of_samples)
         print(tf.tmp_stmp() + 'PS4 done')
     else:
         print('|| All frequency data not found')
@@ -1104,14 +1089,9 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
 
     # PM2 Absent from controls (eg gnomad = 0) be careful about indels IN TABLE
     # Use gnomad_genome and either gnomad exome or exac for exome data
-    if 'gnomAD_exomes_AF' in full_stuff.columns and 'gnomAD_genomes_AF' in full_stuff.columns:
-        freq_geno_series = pd.to_numeric(full_stuff['gnomAD_genomes_AF'], errors='coerce')
-        freq_exo_series = pd.to_numeric(full_stuff['gnomAD_exomes_AF'], errors='coerce')
-        PM2_contrib = check_vep_PM2(full_stuff, freq_exo_series, freq_geno_series, ref_anno)
-        print(tf.tmp_stmp() + 'PM2 done')
-    elif 'gnomAD_genomes_AF' in full_stuff.columns and 'ExAC_AF' in full_stuff.columns:
-        freq_geno_series = pd.to_numeric(full_stuff['gnomAD_genomes_AF'], errors='coerce')
-        freq_exo_series = pd.to_numeric(full_stuff['ExAC_AF'], errors='coerce')
+    if tf.get_population_frequency_columns(full_stuff):
+        freq_geno_series = pd.Series([pd.NA] * df_length)
+        freq_exo_series = pd.Series([pd.NA] * df_length)
         PM2_contrib = check_vep_PM2(full_stuff, freq_exo_series, freq_geno_series, ref_anno)
         print(tf.tmp_stmp() + 'PM2 done')
     else:
@@ -1163,7 +1143,7 @@ def process_data(full_stuff, ref_anno, number_of_samples, tup_database, cutoff):
 
 
     try:
-        BA_1_contrib = check_vep_BA1(freq_exo_series, freq_geno_series)
+        BA_1_contrib = check_vep_BA1(full_stuff)
         print(tf.tmp_stmp() + 'BA1 done')
     except (KeyError, UnboundLocalError, NameError) as e:
         BA_1_contrib = [0] * df_length
